@@ -1,0 +1,7 @@
+{
+    "routes": [
+	{ "src": "/", "dest": "/api/homepage.js" },
+	{ "src": "/embed", "dest": "/api/embed/index.js" },
+	{ "src": "/oembed", "dest": "/api/oembed/index.js" }
+    ]
+}

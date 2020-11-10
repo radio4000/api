@@ -1,0 +1,6 @@
+* deploy 
+- dev: =now .=
+- prodction: =now . --prod=
+
+* local build
+- =now dev=
