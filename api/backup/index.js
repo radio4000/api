@@ -10,7 +10,7 @@ module.exports = (req, res) => {
 	.then(backup => res.status(200).send(backup))
 	.catch(error => {
 	    res.status(500).send({
-		message: `Could not fetch channel "${slug}"`,
+		message: `Could not fetch channel '${slug}'`,
 		code: 500,
 		internalError: error
 	    })
