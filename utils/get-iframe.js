@@ -1,4 +1,4 @@
-const config = require('../../config')
+import config from './config'
 
 const html = `
 	<!doctype html>
@@ -12,7 +12,7 @@ const html = `
 	<script src="##PLAYER_SCRIPT_URL##" async></script>
 `
 
-module.exports = function(slug) {
+export default function(slug) {
 	if (!slug || !config.playerScriptURL) {
 		throw new Error('missing slug or playerScriptURL')
 	}
