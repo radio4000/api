@@ -14,7 +14,7 @@ if (process.env.VERCEL_ENV === 'production') {
 }
 
 if (process.env.VERCEL_ENV === 'preview') {
-	if (process.env.VERCEL_URL) config.apiURL = process.env.VERCEL_URL
+	if (process.env.NEXT_PUBLIC_VERCEL_URL) config.apiURL = process.env.NEXT_PUBLIC_VERCEL_URL
 }
 
 
