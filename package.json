@@ -4,7 +4,11 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint"
+		"lint": "next lint",
+		"export-firebase-database": "firebase database:get / --project firebase-radio4000 --output ./migration/input/database.json",
+		"export-firebase-users": "firebase auth:export --project firebase-radio4000 ./migration/input/auth-users.json",
+		"export-firebase": "npm run export-firebase-database; npm run export-firebase-users",
+		"migrate": "node pages/api/migration/index.js"
 	},
 	"dependencies": {
 		"next": "12.0.7",
@@ -13,11 +17,14 @@
 		"dompurify": "^2.3.4",
 		"got": "^12.0.0",
 		"jsdom": "^19.0.0",
-		"radio4000-sdk": "^0.1.3"
+		"radio4000-sdk": "^0.1.3",
+		"pg": "^8.7.1",
+		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
 		"eslint": "8.5.0",
-		"eslint-config-next": "12.0.7"
+		"eslint-config-next": "12.0.7",
+		"firebase-tools": "^9.18.0"
 	},
 	"license": "aGPLv3"
 }
