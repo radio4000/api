@@ -6,19 +6,21 @@ import getOEmbed from '../../utils/get-oembed'
 function getChannelBySlug(slug) {
 	const url = `${config.databaseURL}/channels.json?orderBy="slug"&equalTo="${slug}"`
 	return got(url, {
-		timeout: 6000,
-		retries: 1,
-	})
+		timeout: {
+			request: 6000
+		},
+		retry: {
+			limit: 1
+		}
+	}).json()
 }
 
 export default function handler(req, res) {
 	const slug = req.query.slug
-
 	if (!slug) return noEndpoint(res)
 
 	return getChannelBySlug(slug)
-		.then((response) => {
-			const channels = JSON.parse(response.body)
+		.then((channels) => {
 			const id = Object.keys(channels)[0]
 			const channel = channels[id]
 
@@ -29,6 +31,7 @@ export default function handler(req, res) {
 			res.status(200).send(embedHtml)
 		})
 		.catch((err) => {
+			console.log(err)
 			res.status(500).send({
 				message: `Could not fetch channel "${slug}"`,
 				code: 500,
