@@ -5,9 +5,9 @@ export default function handler(req, res) {
 		message: 'Welcome to the Radio4000 API',
 		api: {
 			docs: 'https://github.com/internet4000/radio4000-api-vercel',
-			channelBackup: `${config.apiURL}/api/backup?slug={slug}`,
-			channelEmbedUrl: `${config.apiURL}/api/embed?slug={slug}`,
-			channelOEmbedUrl: `${config.apiURL}/api/oembed?slug={slug}`,
+			channelBackup: `${config.apiURL}/backup?slug={slug}`,
+			channelEmbedUrl: `${config.apiURL}/embed?slug={slug}`,
+			channelOEmbedUrl: `${config.apiURL}/oembed?slug={slug}`,
 		},
 		database: {
 			docs: 'https://github.com/internet4000/radio4000-firebase-rules',
