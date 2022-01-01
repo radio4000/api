@@ -17,6 +17,7 @@ function getChannelBySlug(slug) {
 
 export default function handler(req, res) {
 	const slug = req.query.slug
+
 	if (!slug) return noEndpoint(res)
 
 	return getChannelBySlug(slug)
@@ -31,7 +32,6 @@ export default function handler(req, res) {
 			res.status(200).send(embedHtml)
 		})
 		.catch((err) => {
-			console.log(err)
 			res.status(500).send({
 				message: `Could not fetch channel "${slug}"`,
 				code: 500,
