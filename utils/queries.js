@@ -1,3 +1,6 @@
+// This file contains the SQL queries needed for
+//  the Firebase -> Supabase migration.
+
 export const insertAuthUser = (id, authUser) => {
 	const {email, createdAt, passwordHash} = authUser
 	const provider = {provider: extractProvider(authUser)}
