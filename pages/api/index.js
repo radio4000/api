@@ -1,10 +1,10 @@
-import config from '../../utils/config'
+import config from 'utils/config'
 
 export default function handler(req, res) {
 	const welcome = {
 		message: 'Welcome to the Radio4000 API',
 		api: {
-			docs: 'https://github.com/internet4000/radio4000-api-vercel',
+			docs: `${config.repoURL}`,
 			channelBackup: `${config.apiURL}/backup?slug={slug}`,
 			channelEmbedUrl: `${config.apiURL}/embed?slug={slug}`,
 			channelOEmbedUrl: `${config.apiURL}/oembed?slug={slug}`,
@@ -17,6 +17,9 @@ export default function handler(req, res) {
 			tracksUrl: `${config.databaseURL}tracks.json`,
 			trackUrl: `${config.databaseURL}tracks/{id}.json`,
 		},
+		internal: {
+			importFirebase: `${config.apiURL}/import/firebase`,
+		}
 	}
 	res.status(200).json(welcome)
 }
