@@ -1,10 +1,3 @@
-// Load the environment variables required for postgres db connection
-import dotenv from 'dotenv'
-const config = dotenv.config({path: './.env.local'})
-if (config.error) {
-	throw new Error('Missing environment variables')
-}
-
 // Connect to Postgres
 import pg from 'pg'
 const pool = new pg.Pool()

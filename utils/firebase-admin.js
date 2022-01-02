@@ -1,20 +1,75 @@
-import admin from 'firebase-admin'
+import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
+import {getAuth} from 'firebase-admin/auth'
+import {getDatabase, ref, child, get} from 'firebase-admin/database'
+import config from './config'
 
-// Instead of using a service account file, we load the three required keys
-// from the service account file as env vars.
-// const serviceAccount = require('path/to/serviceAccountKey.json')
-const projectId = process.env.FIREBASE_SERVICE_ACCOUNT_PROJECT_ID
-const clientEmail = process.env.FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL
-const privateKey = process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY
-const formattedPrivateKey = privateKey.replace(/\\n/g, '\n')
-// console.log(privateKey)
-// console.log(formattedPrivateKey)
+const {databaseURL, serviceAccount} = config?.firebase
 
-// Init Firebase Admin SDK
-const firebaseAdmin = initializeApp({
-	credential: admin.credential.cert({projectId, clientEmail, privateKey: formattedPrivateKey}),
-	databaseURL: 'https://radio4000.firebaseio.com',
+/*
+	Init Firebase Admin SDK
+*/
+const firebaseAdminClient = initializeApp({
+	databaseURL,
+	credential: firebase.credential.cert(serviceAccount),
 })
 
-export default firebaseAdmin
+const dbRef = ref(getDatabase())
+
+/*
+	Auth middlewares
+*/
+// verify a user is logged in
+export const verifyFirebaseToken = async (idToken) => {
+	return getAuth().verifyIdToken(idToken)
+}
+
+// require firebase authentication
+export const requireFirebaseSession = (fn) => async (req, res) => {
+	const userFirebase = await verifyFirebaseToken(req.body.tokenFirebase)
+	if (!userFirebase) return res.status(401).json({
+		message: 'Not signed in r4@firebase; ?tokenFirebase='
+	})
+	req.userFirebase = userFirebase
+	return fn(req, res)
+}
+
+// are you getting the error?
+// http://localhost:3001/api/import/firebase
+// yea
+
+// require firebase auth and auth.channels[0]
+export const requireFirebaseChannel = requireFirebaseSession((fn) => async (req, res) => {
+	const userChannel = await getUserChannel(req.userFirebase)
+	req.channelFirebase = userChannel
+	return fn(req, res)
+})
+
+
+/*
+	CRUD
+*/
+const getUser = async (firebaseUserUid) => {
+	return get(child(dbRef, `users/${firebaseUserUid}`)).then((snapshot) => {
+		if (snapshot.exists()) {
+			return snapshot.val()
+		} else {
+			console.log('No firebase user available')
+		}
+	})
+}
+
+const getUserChannel = async (firebaseUserUid) => {
+	const user = await getUser(firebaseUserUid)
+	const channels = user.channels
+	const channelId = Object.keys(channels)[0]
+	return get(child(dbRef, `channels/${channelId}`)).then((snapshot) => {
+		if (snapshot.exists()) {
+			return snapshot.val()
+		} else {
+			console.log('No firebase user.channel available')
+		}
+	})
+}
+
+export default firebaseAdminClient

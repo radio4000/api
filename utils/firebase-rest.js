@@ -1,6 +1,7 @@
-// Helpers to make it easier to work with the Radio4000 Firebase database.
+import config from './config'
 
-function fetchAndParse(url, host = 'https://radio4000.firebaseio.com') {
+// Helpers to make it easier to work with the Radio4000 Firebase database.
+function fetchAndParse(url, host = config.databaseURL) {
 	return fetch(`${host}/${url}`)
 		.then((res) => res.json())
 		.then((data) => {
@@ -29,4 +30,9 @@ export function findTracksByChannel(id) {
 	return fetchAndParse(url)
 		.then(toArray)
 		.then((arr) => arr.sort((a, b) => a.created - b.created))
+}
+
+export function findChannelBySlug(slug) {
+	const url = `channels.json?orderBy="slug"&equalTo="${slug}"`
+	return fetchAndParse(url).then(toArray).then((arr) => arr[0])
 }
