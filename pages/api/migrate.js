@@ -42,8 +42,6 @@ function verifyFirebaseToken(idToken) {
 }
 
 async function verifySupabaseToken(access_token) {
-	console.log(access_token)
-	const {user, data, error} = await supabase.auth.api.getUser(access_token)
-	console.log(user, data, error)
-	return false
+	const {user} = await supabase.auth.api.getUser(access_token)
+	return user
 }
