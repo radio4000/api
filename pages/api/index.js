@@ -1,25 +1,29 @@
-import config from 'utils/config'
+import {
+	RADIO4000_API_URL,
+	RADIO4000_REPO_URL,
+	FIREBASE_DATABASE_URL
+} from 'utils/config'
 
 export default function handler(req, res) {
-	const welcome = {
+	res.status(200).json({
 		message: 'Welcome to the Radio4000 API',
 		api: {
-			docs: `${config.repoURL}`,
-			channelBackup: `${config.apiURL}/backup?slug={slug}`,
-			channelEmbedUrl: `${config.apiURL}/embed?slug={slug}`,
-			channelOEmbedUrl: `${config.apiURL}/oembed?slug={slug}`,
+			docs: `${RADIO4000_REPO_URL}`,
+			channelBackup: `${RADIO4000_API_URL}/backup?slug={slug}`,
+			channelEmbedUrl: `${RADIO4000_API_URL}/embed?slug={slug}`,
+			channelOEmbedUrl: `${RADIO4000_API_URL}/oembed?slug={slug}`,
 		},
-		database: {
-			docs: 'https://github.com/internet4000/radio4000-firebase-rules',
-			url: config.databaseURL,
-			channelsUrl: `${config.databaseURL}channels.json`,
-			channelUrl: `${config.databaseURL}channels/{id}.json`,
-			tracksUrl: `${config.databaseURL}tracks.json`,
-			trackUrl: `${config.databaseURL}tracks/{id}.json`,
+		firebaseDatabase: {
+			docs: `${RADIO4000_REPO_URL}`,
+			url: `${FIREBASE_DATABASE_URL}`,
+			channelsUrl: `${FIREBASE_DATABASE_URL}channels.json`,
+			channelUrl: `${FIREBASE_DATABASE_URL}channels/{id}.json`,
+			tracksUrl: `${FIREBASE_DATABASE_URL}tracks.json`,
+			trackUrl: `${FIREBASE_DATABASE_URL}tracks/{id}.json`,
 		},
 		internal: {
-			importFirebase: `${config.apiURL}/import/firebase`,
+			docs: `${RADIO4000_REPO_URL}`,
+			importFirebase: `${RADIO4000_API_URL}/import/firebase`,
 		}
-	}
-	res.status(200).json(welcome)
+	})
 }

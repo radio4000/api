@@ -1,6 +1,6 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
-import config from 'utils/config'
+import {RADIO4000_PLAYER_SCRIPT_URL} from 'utils/config'
 
 export default function handler(req, res) {
 	const slug = req.query.slug

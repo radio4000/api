@@ -1,7 +1,7 @@
 import config from './config'
 
 // Helpers to make it easier to work with the Radio4000 Firebase database.
-function fetchAndParse(url, host = config.databaseURL) {
+function fetchAndParse(url, host = config.firebase.databaseURL) {
 	return fetch(`${host}/${url}`)
 		.then((res) => res.json())
 		.then((data) => {

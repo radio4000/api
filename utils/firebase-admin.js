@@ -2,7 +2,7 @@ import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
 import {getAuth} from 'firebase-admin/auth'
 import {getDatabase, ref, child, get} from 'firebase-admin/database'
-import config from './config'
+import config from 'utils/config'
 
 const {databaseURL, serviceAccount} = config?.firebase
 
