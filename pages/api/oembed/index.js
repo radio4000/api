@@ -8,18 +8,24 @@ import {findChannelBySlug} from 'utils/firebase-rest'
 export default function handler(req, res) {
 	const slug = req.query.slug
 
-	if (!slug) return noEndpoint(res)
+	if (!slug) return res.status(404).json({
+		message: `Missing parameter ?slug=`
+	})
 
 	return findChannelBySlug(slug)
 		.then((channel) => {
-			if (!channel) return noEndpoint(res)
+			if (!channel) {
+				return res.status(404).json({
+					message: `Requested channel @${slug} does not exist`
+				})
+			}
 			const embedHtml = getOEmbed(channel)
 			res.status(200).send(embedHtml)
 		})
 		.catch((err) => {
 			console.log(err)
 			res.status(500).send({
-				message: `Could not fetch channel "${slug}"`,
+				message: `Could not fetch channel @${slug}`,
 				code: 500,
 				internalError: err,
 			})
