@@ -1,3 +1,4 @@
+import firebaseAdmin from '../../utils/firebase-admin'
 /*
 	Accepts a body with
 	- tokenFirebase
@@ -12,53 +13,43 @@ export default async function migrate(req, res) {
 		return
 	}
 	// Collect firebase + supabase tokens from the request
-	const body = JSON.parse(req.body)
-	const {tokenFirebase, tokenSupabase} = body
+	// const body = JSON.parse(req.body)
+	// console.log(body)
+	const {tokenFirebase, tokenSupabase} = req.body
 
 	// Verify both
 	const firebaseIsValid = await verifyFirebaseToken(tokenFirebase)
 	const supabaseIsValid = await verifySupabaseToken(tokenSupabase)
-	const bothTokensAreValid = firebaseIsValid && supabaseIsValid
+	console.log(firebaseIsValid, supabaseIsValid)
+	const bothTokensAreValid = tokenFirebase && tokenSupabase
 
 	if (bothTokensAreValid) {
-		// Then what?!
+		res.status(200).send('all good')
+	} else {
+		res.status(403).send('not so good')
 	}
-
-	// Temporary test reponse while developing
-	const data = {just: 'testing', firebaseIsValid, supabaseIsValid}
-	res.status(200).json(data)
 }
 
 function verifyFirebaseToken(idToken) {
-	return new Promise.resolve(false)
-	// return getAuth()
-	// 	.verifyIdToken(idToken)
-	// 	.then((decodedToken) => {
-	// 		const uid = decodedToken.uid
-	// 		console.log(uid)
-	// 		return uid
-	// 		// ...
-	// 	})
-	// 	.catch((error) => {
-	// 		console.log(error)
-	// 		// Handle error
-	// 	})
+	// return Promise.resolve(false)
+	return getAuth()
+		.verifyIdToken(idToken)
+		.then((decodedToken) => {
+			const uid = decodedToken.uid
+			console.log(uid)
+			return uid
+			// ...
+		})
+		.catch((error) => {
+			console.log(error)
+			return false
+			// Handle error
+		})
 }
 
 function verifySupabaseToken(token) {
-	return new Promise.resolve(false)
+	return Promise.resolve(false)
 }
-
-// import {initializeApp} from 'firebase-admin/app'
-// import {getAuth} from 'firebase-admin'
-// import {createClient} from '@supabase/supabase-js'
-
-// // init firebase app
-// initializeApp({
-// 	// credential: credential.cert(serviceAccount),
-// 	databaseURL: 'https://radio4000.firebaseio.com',
-// })
-
 // const supabaseConfig = {
 // 	url: 'https://jbmaibztbxmtrtjzrory.supabase.co',
 // 	key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MDk1OTgxMSwiZXhwIjoxOTU2NTM1ODExfQ.s2Cr-3AoFxkzQwrPXEx8vcj7eJluK__VK8XKiXsCxT4',

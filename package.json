@@ -11,14 +11,15 @@
 		"migrate": "node pages/api/migration/index.js"
 	},
 	"dependencies": {
-		"next": "12.0.7",
-		"react": "17.0.2",
-		"react-dom": "17.0.2",
 		"dompurify": "^2.3.4",
+		"firebase-admin": "^10.0.1",
 		"got": "^12.0.0",
 		"jsdom": "^19.0.0",
-		"radio4000-sdk": "^0.1.3",
+		"next": "12.0.7",
 		"pg": "^8.7.1",
+		"radio4000-sdk": "^0.1.3",
+		"react": "17.0.2",
+		"react-dom": "17.0.2",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
