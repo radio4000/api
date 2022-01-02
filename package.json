@@ -4,11 +4,7 @@
 		"dev": "next dev",
 		"build": "next build",
 		"start": "next start",
-		"lint": "next lint",
-		"export-firebase-database": "firebase database:get / --project firebase-radio4000 --output ./migration/input/database.json",
-		"export-firebase-users": "firebase auth:export --project firebase-radio4000 ./migration/input/auth-users.json",
-		"export-firebase": "npm run export-firebase-database; npm run export-firebase-users",
-		"migrate": "node pages/api/migration/index.js"
+		"lint": "next lint"
 	},
 	"dependencies": {
 		"@supabase/supabase-js": "^1.29.1",
@@ -26,7 +22,8 @@
 	"devDependencies": {
 		"eslint": "8.5.0",
 		"eslint-config-next": "12.0.7",
-		"firebase-tools": "^9.18.0"
+		"firebase-tools": "^9.18.0",
+		"raw-loader": "^4.0.2"
 	},
 	"license": "aGPLv3"
 }

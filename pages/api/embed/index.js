@@ -1,4 +1,19 @@
-import config from './config'
+import createDOMPurify from 'dompurify'
+import {JSDOM} from 'jsdom'
+import config from 'utils/config'
+
+export default function handler(req, res) {
+	const slug = req.query.slug
+	if (!slug) return res.status(404).send({
+		message: 'missing `slug` parameter'
+	})
+
+	// Prevent XSS
+	const DOMPurify = createDOMPurify(new JSDOM('').window)
+	const safeSlug = DOMPurify.sanitize(slug)
+
+	res.status(200).send(getIframe(safeSlug, config.playerScriptURL))
+}
 
 const html = `
 	<!doctype html>
@@ -12,7 +27,7 @@ const html = `
 	<script src="##PLAYER_SCRIPT_URL##" async></script>
 `
 
-export default function(slug) {
+const getIframe = (slug) => {
 	if (!slug || !config.playerScriptURL) {
 		throw new Error('missing slug or playerScriptURL')
 	}
