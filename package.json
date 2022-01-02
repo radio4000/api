@@ -11,6 +11,7 @@
 		"migrate": "node pages/api/migration/index.js"
 	},
 	"dependencies": {
+		"@supabase/supabase-js": "^1.29.1",
 		"dompurify": "^2.3.4",
 		"firebase-admin": "^10.0.1",
 		"got": "^12.0.0",
