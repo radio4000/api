@@ -1,8 +1,10 @@
-import {
+import config from 'utils/config'
+
+const {
 	RADIO4000_API_URL,
 	RADIO4000_REPO_URL,
 	FIREBASE_DATABASE_URL
-} from 'utils/config'
+} = config
 
 export default function handler(req, res) {
 	res.status(200).json({

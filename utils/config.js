@@ -12,11 +12,7 @@
 
 const defaultRadio4000ApiUrl = 'https://api.radio4000.com'
 
-/*
-	Make config checks:
-	- list required environment variables
-	- warn if missing
-*/
+/* a list of required env vars to run to app */
 const requiredEnvVars = {
 	'RADIO4000_REPO_URL': null,
 	'RADIO4000_CMS_URL': null,
@@ -41,57 +37,61 @@ const requiredEnvVars = {
 	'PGPORT': null,
 }
 
+/* assign env values to a config object */
 let config = {}
 Object.keys(requiredEnvVars).forEach(envVar => {
 	const envVarValue = process.env[envVar]
 	config[envVar] = envVarValue
+})
 
-	if (envVar.startsWith('RADIO4000_') && !envVarValue) {
+/* serialize firebase keys, exported to en env var, from a file to a string */
+config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY = config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(/\\n/g, '\n')
+
+/* List missing required environment variables */
+Object.keys(config).forEach(configKey => {
+	const configValue = config[configKey]
+
+	if (configKey.startsWith('RADIO4000_') && !configValue) {
 		console.error({
 			message: 'Missing required Radio4000@api env variable',
-			variable: envVar,
-			value: envVarValue
+			variable: configKey,
+			value: configValue
 		})
 	}
-	if (envVar.startsWith('CLOUDINARY_') && !envVarValue) {
+	if (configKey.startsWith('CLOUDINARY_') && !configValue) {
 		console.error({
 			message: 'Missing required Radio4000@cloudinary images env variable',
-			variable: envVar,
-			value: envVarValue
+			variable: configKey,
+			value: configValue
 		})
 	}
-	if (envVar.startsWith('SUPABASE_') && !envVarValue) {
+	if (configKey.startsWith('SUPABASE_') && !configValue) {
 		console.error({
 			message: 'Missing required Radio4000@supabase env variable',
-			variable: envVar,
-			value: envVarValue
+			variable: configKey,
+			value: configValue
 		})
 	}
-	if (envVar.startsWith('PG') && !envVarValue) {
+	if (configKey.startsWith('PG') && !configValue) {
 		console.error({
 			message: 'Missing required Radio4000@supabase/postgresql env variable',
-			variable: envVar,
-			value: envVarValue
+			variable: configKey,
+			value: configValue
 		})
 	}
-	if (envVar.startsWith('FIREBASE_') && !envVarValue) {
+	if (configKey.startsWith('FIREBASE_') && !configValue) {
 		console.warn({
 			message: 'Missing required Firebase env variable; it will not be possible to use Firebase legacy endpoints',
-			variable: envVar,
-			value: envVarValue
+			variable: configKey,
+			value: configValue
 		})
 	}
 })
 
-// serialize firebase keys, exported to en env var, from a file to a string
-config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY = config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n')
-
-// vercel environment specifics
-// if (process.env.VERCEL_ENV === 'preview') {
-// 	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-// 	if (vercelUrl) config.RADIO4000_API_URL = vercelUrl
-// }
-
-console.log(config)
+/* vercel environment specifics */
+if (process.env.VERCEL_ENV === 'preview') {
+	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+	if (vercelUrl) config.RADIO4000_API_URL = vercelUrl
+}
 
 export default config

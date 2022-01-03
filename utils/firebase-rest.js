@@ -1,4 +1,6 @@
-import {FIREBASE_DATABASE_URL} from 'utils/config'
+import config from 'utils/config'
+
+const {FIREBASE_DATABASE_URL} = config
 
 // Helpers to make it easier to work with the Radio4000 Firebase database.
 function fetchAndParse(url) {

@@ -2,15 +2,15 @@ import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
 import {getAuth} from 'firebase-admin/auth'
 import {getDatabase, ref, child, get} from 'firebase-admin/database'
-import {
+import config from 'utils/config'
+
+const {
 	FIREBASE_DATABASE_URL,
 	FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
 	FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
 	FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
 
-} from 'utils/config'
-
-const {databaseURL, serviceAccount} = config?.firebase
+} = config
 
 /*
 	Init Firebase Admin SDK

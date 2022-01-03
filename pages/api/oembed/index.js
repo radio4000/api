@@ -1,12 +1,14 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
 import {findChannelBySlug} from 'utils/firebase-rest'
-import {
+import config from 'utils/config'
+
+const {
 	RADIO4000_API_URL,
 	RADIO4000_CMS_URL,
 	RADIO4000_APP_ICON_URL,
 	CLOUDINARY_URL,
-} from 'utils/config'
+} = config
 
 export default function handler(req, res) {
 	const slug = req.query.slug

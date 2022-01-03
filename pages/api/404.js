@@ -1,4 +1,6 @@
-import {RADIO4000_REPO_URL} from 'utils/config'
+import config from 'utils/config'
+
+const {RADIO4000_REPO_URL} = config
 
 export default function handler(req, res) {
 	res.status(404).json({
