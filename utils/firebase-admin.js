@@ -26,30 +26,10 @@ const firebaseAdminClient = initializeApp({
 
 const dbRef = ref(getDatabase())
 
-/*
-	Auth middlewares
-*/
 // verify a user is logged in
 export const verifyFirebaseToken = async (idToken) => {
 	return getAuth().verifyIdToken(idToken)
 }
-
-// require firebase authentication
-export const requireFirebaseSession = (fn) => async (req, res) => {
-	const userFirebase = await verifyFirebaseToken(req.body.tokenFirebase)
-	if (!userFirebase) return res.status(401).json({
-		message: 'Not signed in r4@firebase; ?tokenFirebase='
-	})
-	req.userFirebase = userFirebase
-	return fn(req, res)
-}
-
-// require firebase auth and auth.channels[0]
-export const requireFirebaseChannel = requireFirebaseSession((fn) => async (req, res) => {
-	const userChannel = await getUserChannel(req.userFirebase)
-	req.channelFirebase = userChannel
-	return fn(req, res)
-})
 
 /*
 	CRUD
