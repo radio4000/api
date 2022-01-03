@@ -1,4 +1,4 @@
-import config from 'utils/config'
+import config from 'lib/config'
 
 const {
 	RADIO4000_REPO_URL,

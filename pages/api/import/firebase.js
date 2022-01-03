@@ -1,11 +1,14 @@
-import {requireSupabaseSession} from 'middlewares/auth/supabase'
-import {requireFirebaseSession} from 'middlewares/auth/firebase'
+import {requireSupabaseSession} from 'lib/middlewares/auth/supabase'
+import {requireFirebaseSession} from 'lib/middlewares/auth/firebase'
+import {getUserChannel} from 'lib/providers/firebase-admin'
 
-import {migrate} from './migration'
+import {migrate} from './migration-test'
+// ok this is working and getting users
+// could commit from here?
 
 async function handler(req, res) {
 	if (req.method === 'OPTIONS') {
-		res.status(200)//.end()
+		res.status(200) //.end()
 		return
 	}
 	if (req.method !== 'POST') {
@@ -14,29 +17,27 @@ async function handler(req, res) {
 		})
 	}
 
-	const {userSupabase, userFirebase, channelFirebase} = req
-	// console.log({userSupabase, userFirebase, channelFirebase})
+	const {userSupabase, userFirebase} = req
 
+	console.log({userSupabase, userFirebase})
+
+	// Shouldn't be needed because of the middleware, but lets keep for now?
 	if (!userSupabase || !userFirebase) {
 		return res.status(500).send({
-			message: 'Could not migrate, missing authentication tokens',
+			message: 'Missing authentication tokens required for migration',
 		})
 	}
 
-	let firebaseChannelId = false // @todo
-	if (!firebaseChannelId) {
-		return res.status(500).send({
-			message: 'Could not migrate, missing firebase channel id'
-		})
-	}
-
+	let migrationRes = null
 	try {
-		const supabaseUserId = userSupabase.id
-		migrate(firebaseChannelId, supabaseUserId)
-	} catch (err) {
-		console.log(err)
-		res.status(500).send({message: 'Could not migrate'})
+		migrationRes = await migrate({
+			userFirebase,
+			userSupabase,
+		})
+	} catch (error) {
+		console.log('error migrating', error)
 	}
+	console.log('res', migrationRes)
 }
 
 // export default handler

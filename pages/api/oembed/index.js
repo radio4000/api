@@ -1,7 +1,7 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
-import {findChannelBySlug} from 'providers/firebase-rest'
-import config from 'utils/config'
+import {findChannelBySlug} from 'lib/providers/firebase-rest'
+import config from 'lib/config'
 
 const {
 	RADIO4000_API_URL,

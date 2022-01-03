@@ -1,6 +1,6 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
-import config from 'utils/config'
+import config from 'lib/config'
 
 const {RADIO4000_PLAYER_SCRIPT_URL} = config
 
