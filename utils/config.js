@@ -1,25 +1,28 @@
 /*
-	DOCS
+	DOCS: https://vercel.com/internet4000/radio4000-api/settings/environment-variables
 
-	Public:
+	Secret ENV VARS:
+	.env{.*}.local
+
+	Public ENV VARS:
 	.env
 	.env.development
 	.env.production
-
-	Secret:
-	.env.local
-	vercel.com https://vercel.com/internet4000/radio4000-api/settings/environment-variables
 */
 
+const defaultRadio4000ApiUrl = 'https://api.radio4000.com'
+
 /*
-	make config checks,
-	list required environment variables
+	Make config checks:
+	- list required environment variables
+	- warn if missing
 */
 const requiredEnvVars = {
 	'RADIO4000_REPO_URL': null,
 	'RADIO4000_CMS_URL': null,
 	'RADIO4000_API_URL': null,
 	'RADIO4000_PLAYER_SCRIPT_URL': null,
+	'RADIO4000_APP_ICON_URL': null,
 
 	'CLOUDINARY_URL': null,
 
@@ -42,6 +45,7 @@ let config = {}
 Object.keys(requiredEnvVars).forEach(envVar => {
 	const envVarValue = process.env[envVar]
 	config[envVar] = envVarValue
+
 	if (envVar.startsWith('RADIO4000_') && !envVarValue) {
 		console.error({
 			message: 'Missing required Radio4000@api env variable',
@@ -80,15 +84,14 @@ Object.keys(requiredEnvVars).forEach(envVar => {
 })
 
 // serialize firebase keys, exported to en env var, from a file to a string
-config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY = process.env.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n')
+config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY = config.FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY.replace(/\\n/g, '\n')
 
-if (process.env.VERCEL_ENV === 'preview') {
-	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-	if (vercelUrl) config.apiURL = vercelUrl
-}
+// vercel environment specifics
+// if (process.env.VERCEL_ENV === 'preview') {
+// 	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
+// 	if (vercelUrl) config.RADIO4000_API_URL = vercelUrl
+// }
 
-if (process.env.VERCEL_ENV === 'production') {
-	config.apiURL = process.env.RADIO4000_API_URL || 'https://api.radio4000.com'
-}
+console.log(config)
 
 export default config

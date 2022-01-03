@@ -2,7 +2,13 @@ import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
 import {getAuth} from 'firebase-admin/auth'
 import {getDatabase, ref, child, get} from 'firebase-admin/database'
-import config from 'utils/config'
+import {
+	FIREBASE_DATABASE_URL,
+	FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
+	FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
+	FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
+
+} from 'utils/config'
 
 const {databaseURL, serviceAccount} = config?.firebase
 
@@ -10,8 +16,12 @@ const {databaseURL, serviceAccount} = config?.firebase
 	Init Firebase Admin SDK
 */
 const firebaseAdminClient = initializeApp({
-	databaseURL,
-	credential: firebase.credential.cert(serviceAccount),
+	databaseURL: FIREBASE_DATABASE_URL,
+	credential: firebase.credential.cert({
+		projectId: FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
+		clientEmail: FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
+		privateKey: FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
+	}),
 })
 
 const dbRef = ref(getDatabase())
@@ -34,17 +44,12 @@ export const requireFirebaseSession = (fn) => async (req, res) => {
 	return fn(req, res)
 }
 
-// are you getting the error?
-// http://localhost:3001/api/import/firebase
-// yea
-
 // require firebase auth and auth.channels[0]
 export const requireFirebaseChannel = requireFirebaseSession((fn) => async (req, res) => {
 	const userChannel = await getUserChannel(req.userFirebase)
 	req.channelFirebase = userChannel
 	return fn(req, res)
 })
-
 
 /*
 	CRUD

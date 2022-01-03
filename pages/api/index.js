@@ -16,10 +16,10 @@ export default function handler(req, res) {
 		firebaseDatabase: {
 			docs: `${RADIO4000_REPO_URL}`,
 			url: `${FIREBASE_DATABASE_URL}`,
-			channelsUrl: `${FIREBASE_DATABASE_URL}channels.json`,
-			channelUrl: `${FIREBASE_DATABASE_URL}channels/{id}.json`,
-			tracksUrl: `${FIREBASE_DATABASE_URL}tracks.json`,
-			trackUrl: `${FIREBASE_DATABASE_URL}tracks/{id}.json`,
+			channelsUrl: `${FIREBASE_DATABASE_URL}/channels.json`,
+			channelUrl: `${FIREBASE_DATABASE_URL}/channels/{id}.json`,
+			tracksUrl: `${FIREBASE_DATABASE_URL}/tracks.json`,
+			trackUrl: `${FIREBASE_DATABASE_URL}/tracks/{id}.json`,
 		},
 		internal: {
 			docs: `${RADIO4000_REPO_URL}`,

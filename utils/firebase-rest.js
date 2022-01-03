@@ -1,7 +1,8 @@
-import config from './config'
+import {FIREBASE_DATABASE_URL} from 'utils/config'
 
 // Helpers to make it easier to work with the Radio4000 Firebase database.
-function fetchAndParse(url, host = config.firebase.databaseURL) {
+function fetchAndParse(url) {
+	const host = FIREBASE_DATABASE_URL
 	return fetch(`${host}/${url}`)
 		.then((res) => res.json())
 		.then((data) => {

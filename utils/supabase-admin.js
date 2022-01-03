@@ -1,13 +1,10 @@
 import {createClient} from '@supabase/supabase-js'
+import {
+	SUPABASE_URL,
+	SUPABASE_ANON_KEY
+} from 'utils/config'
 
-const url = process.env.SUPABASE_URL
-const key = process.env.SUPABASE_ANON_KEY
-const supabaseClient = createClient(url, key)
-
-export const verifySupabaseToken = async (access_token) => {
-	const {user} = await supabaseClient.auth.api.getUser(access_token)
-	return user
-}
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 // require supabase authentication
 export const requireSupabaseSession = (fn) => async (req, res) => {
@@ -17,6 +14,11 @@ export const requireSupabaseSession = (fn) => async (req, res) => {
 	})
 	req.user = user
 	return fn(req, res)
+}
+
+export const verifySupabaseToken = async (access_token) => {
+	const {user} = await supabaseClient.auth.api.getUser(access_token)
+	return user
 }
 
 export default supabaseClient
