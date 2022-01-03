@@ -1,6 +1,6 @@
 import postgres from 'utils/postgres.js'
-import {requireFirebaseSession} from 'utils/firebase-admin'
 import {requireSupabaseSession} from 'utils/supabase-admin'
+import {requireFirebaseSession} from 'utils/firebase-admin'
 
 // that wasn't the error
 
