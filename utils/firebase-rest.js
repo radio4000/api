@@ -3,15 +3,31 @@ import config from 'utils/config'
 const {FIREBASE_DATABASE_URL} = config
 
 // Helpers to make it easier to work with the Radio4000 Firebase database.
-function fetchAndParse(url) {
+
+// 5 second timeout:
+
+async function fetchAndParse(url) {
 	const host = FIREBASE_DATABASE_URL
-	return fetch(`${host}/${url}`)
-		.then((res) => res.json())
-		.then((data) => {
-			// Catch resolved promise with empty value. Like non-existing slug or id.
-			if (Object.keys(data).length === 0) throw new Error('Not found')
-			return data
+
+	// stop the request if hanging
+	const controller = new AbortController()
+	const timeoutId = setTimeout(() => controller.abort(), 600)
+
+	let data = {}
+	try {
+		let res = await fetch(`${host}/${url}`, {
+			signal: controller.signal
 		})
+		if (res) {
+			data = res.json()
+		}
+	} catch(error) {
+		console.error('Error fetching with firebase-rest api', error)
+	}
+
+	// Catch resolved promise with empty value. Like non-existing slug or id.
+	if (Object.keys(data).length === 0) return
+	return data
 }
 
 function toObject(obj, id) {

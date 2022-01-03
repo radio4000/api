@@ -10,31 +10,33 @@ const {
 	CLOUDINARY_URL,
 } = config
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
 	const slug = req.query.slug
 
 	if (!slug) return res.status(404).json({
 		message: `Missing parameter ?slug=`
 	})
 
-	return findChannelBySlug(slug)
-		.then((channel) => {
-			if (!channel) {
-				return res.status(404).json({
-					message: `Requested channel @${slug} does not exist`
-				})
-			}
-			const embedHtml = getOEmbed(channel)
-			res.status(200).send(embedHtml)
+	let channel
+	try {
+		channel = await findChannelBySlug(slug)
+	} catch(error) {
+		console.error(error)
+		res.status(500).send({
+			message: `Could not fetch channel @${slug}`,
+			code: 500,
+			internalError: error,
 		})
-		.catch((err) => {
-			console.log(err)
-			res.status(500).send({
-				message: `Could not fetch channel @${slug}`,
-				code: 500,
-				internalError: err,
-			})
+	}
+
+	if (!channel) {
+		return res.status(404).json({
+			message: `Requested channel @${slug} does not exist`
 		})
+	}
+
+	const embedHtml = getOEmbed(channel)
+	res.status(200).send(embedHtml)
 }
 
 const getOEmbed = ({slug, title, body = '', image}) => {

@@ -12,7 +12,7 @@ export default function handler(req, res) {
 	const safeSlug = DOMPurify.sanitize(slug)
 
 	if (!safeSlug) return res.status(404).json({
-		message: 'Missing parameter `?slug=` parameter'
+		message: 'Missing parameter `?slug=`'
 	})
 
 	res.status(200).send(getIframe(safeSlug, RADIO4000_PLAYER_SCRIPT_URL))
@@ -29,7 +29,7 @@ const getIframe = (slug, playerScriptUrl) => {
 		<meta name="description" content="${slug}@r4-player">
 		<style>
 			html, body, radio4000-player {
-				height: 100%;
+				height: 100% !important;
 			}
 			body {
 				margin: 0;
