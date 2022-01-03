@@ -1,3 +1,4 @@
+import firebaseClient from '/utils/firebase-admin'
 import {requireSupabaseSession} from 'middlewares/auth/supabase'
 import {requireFirebaseSession} from 'middlewares/auth/firebase'
 
@@ -15,7 +16,7 @@ async function handler(req, res) {
 	}
 
 	const {userSupabase, userFirebase, channelFirebase} = req
-	console.log({userSupabase, userFirebase, channelFirebase})
+	// console.log({userSupabase, userFirebase, channelFirebase})
 
 	if (!userSupabase || !userFirebase) {
 		return res.status(500).send({

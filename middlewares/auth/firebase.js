@@ -12,7 +12,6 @@ export const requireFirebaseSession = (fn) => async (req, res) => {
 		return fn(req, res)
 	}
 	const {tokenFirebase} = req.body
-	console.log('tokenFirebase', tokenFirebase)
 	if (!tokenFirebase) {
 		return res.status(401).json({
 			message: 'Invalid firebase user.accessToken; ?tokenFirebase=',
