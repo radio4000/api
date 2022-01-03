@@ -91,7 +91,7 @@ Object.keys(config).forEach(configKey => {
 /* vercel environment specifics */
 if (process.env.VERCEL_ENV === 'preview') {
 	const vercelUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-	if (vercelUrl) config.RADIO4000_API_URL = vercelUrl
+	if (vercelUrl) config.RADIO4000_API_URL = `https://${vercelUrl}`
 }
 
 export default config
