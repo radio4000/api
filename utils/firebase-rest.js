@@ -19,14 +19,11 @@ async function fetchAndParse(url) {
 			signal: controller.signal
 		})
 		if (res) {
-			data = res.json()
+			data = await res.json()
 		}
 	} catch(error) {
 		console.error('Error fetching with firebase-rest api', error)
 	}
-
-	// Catch resolved promise with empty value. Like non-existing slug or id.
-	if (Object.keys(data).length === 0) return
 	return data
 }
 
