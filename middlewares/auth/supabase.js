@@ -1,4 +1,8 @@
-import {verifySupabaseToken} from 'utils/supabase-admin'
+import adminClient from 'providers/supabase-admin'
+
+export const verifySupabaseToken = async (access_token) => {
+	return adminClient.auth.api.getUser(access_token)
+}
 
 // require supabase authentication
 export const requireSupabaseSession = (fn) => async (req, res) => {

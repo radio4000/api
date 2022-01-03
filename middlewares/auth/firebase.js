@@ -1,4 +1,4 @@
-import {getAuth} from 'firebase-admin/auth'
+import {getAuth} from 'providers/firebase-admin'
 
 // verify a user is logged in
 const verifyFirebaseToken = async (idToken) => {

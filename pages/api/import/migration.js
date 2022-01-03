@@ -1,5 +1,5 @@
 import postgres from 'utils/postgres'
-import {findChannel, findTracksByChannel} from 'utils/firebase-rest'
+import {findChannel, findTracksByChannel} from 'providers/firebase-rest'
 import {
 	insertChannel,
 	insertUserChannel,

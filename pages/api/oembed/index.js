@@ -1,6 +1,6 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
-import {findChannelBySlug} from 'utils/firebase-rest'
+import {findChannelBySlug} from 'providers/firebase-rest'
 import config from 'utils/config'
 
 const {

@@ -1,4 +1,3 @@
-import firebaseClient from '/utils/firebase-admin'
 import {requireSupabaseSession} from 'middlewares/auth/supabase'
 import {requireFirebaseSession} from 'middlewares/auth/firebase'
 

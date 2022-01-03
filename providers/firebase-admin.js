@@ -1,5 +1,6 @@
 import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
+import {getAuth} from 'firebase-admin/auth'
 import {getDatabase, ref, child, get} from 'firebase-admin/database'
 import config from 'utils/config'
 
@@ -13,7 +14,7 @@ const {
 /*
 	Init Firebase Admin SDK
 */
-const firebaseAdminClient = initializeApp({
+const adminClient = initializeApp({
 	databaseURL: FIREBASE_DATABASE_URL,
 	credential: firebase.credential.cert({
 		projectId: FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
@@ -50,4 +51,7 @@ const getUserChannel = async (firebaseUserUid) => {
 	})
 }
 
-export default firebaseAdminClient
+export default adminClient
+export {
+	getAuth
+}
