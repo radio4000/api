@@ -1,5 +1,5 @@
 import postgres from 'lib/postgres'
-import {findChannel, findTracksByChannel} from 'lib/providers/firebase-rest'
+import {getUserExport} from 'lib/providers/firebase-admin'
 import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from 'lib/queries'
 
 function serializeChannel(channel) {
@@ -11,7 +11,6 @@ function serializeChannel(channel) {
 	channel.updated = channel.updated ? toTimestamp(channel.updated) : channel.created
 	return channel
 }
-
 function serializeTracks(tracks) {
 	if (tracks.length > 0) {
 		tracks = tracks.map((track) => {
@@ -31,36 +30,12 @@ function toTimestamp(timestamp) {
 	return new Date(Number(timestamp)).toISOString()
 }
 
-// The actual script
 async function migrate({firebaseUserId, supabaseUserId}) {
 	if (!firebaseUserId || !supabaseUserId) {
 		throw new Error('firebaseUserId and supabaseUserId are required')
 	}
 
-	const logs = {
-		start: 0,
-		end: 0,
-		duration: 0,
-		ok: [],
-		failed: [],
-		skipped: [],
-	}
-
-	const startTime = await postgres.query('SELECT NOW()')
-
-	// Fetch Firebase channel and tracks.
-	let channel = await getUserChannel(firebaseUserId)
-	let channel = await findChannel(firebaseChannelId)
-	if (!channel) throw new Error('A channel is required to migrate')
-	let tracks = await findTracksByChannel(channel.id)
-
-	// Prepare the data for import into the Postgres.
-	channel = serializeChannel(channel)
-	tracks = serializeTracks(tracks)
-
-	console.log(
-		`Migrating channel "${channel.title}" with ${tracks.length} tracks to Supabase user ${supabaseUserId}`
-	)
+	const logs = {start: await getTime(), end: 0, duration: 0}
 
 	// Run the queries on the Postgres database.
 	try {
@@ -69,22 +44,21 @@ async function migrate({firebaseUserId, supabaseUserId}) {
 		// await postgres.query('DELETE FROM public.channels')
 		// await postgres.query('DELETE FROM public.tracks')
 		// await postgres.query('DELETE FROM public.user_channel')
-		// await postgres.query('DELETE FROM auth.users')
-		await runQueries(postgres, {supabaseUserId, channel, tracks})
+		const {channel, tracks} = await getUserExport(firebaseUserId)
+		await runQueries(postgres, {
+			supabaseUserId,
+			channel: serializeChannel(channel),
+			tracks: serializeTracks(tracks),
+		})
 		console.log('migrated successfully', supabaseUserId, channel.title)
 	} catch (err) {
 		console.log('failed to migrate', supabaseUserId, err)
 	}
 
-	// For the logs
-	const endTime = await postgres.query('SELECT NOW()')
-	logs.start = new Date(startTime.rows[0].now).getTime()
-	logs.end = new Date(endTime.rows[0].now).getTime()
+	// Log and close the connection.
+	logs.end = getTime()
 	logs.duration = logs.end - logs.start
 	console.log(`Migration ended in ${logs.duration / 1000} seconds`)
-	console.log(`${logs.ok.length} ok, ${logs.failed.length} failed, ${logs.skipped.length} skipped.`)
-
-	// Close the connection.
 	await postgres.pool.end()
 }
 
@@ -134,3 +108,9 @@ async function runQueries(postgres, {supabaseUserId, channel, tracks}) {
 }
 
 export {migrateTest as migrate}
+
+// Returns a timestamp from a Postgres datetime
+const getTime = () =>
+	postgres.query('SELECT now()').then((rows) => {
+		return new Date(rows[0].now).getTime()
+	})

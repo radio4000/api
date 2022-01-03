@@ -1,10 +1,7 @@
 import {requireSupabaseSession} from 'lib/middlewares/auth/supabase'
 import {requireFirebaseSession} from 'lib/middlewares/auth/firebase'
-import {getUserChannel} from 'lib/providers/firebase-admin'
 
 import {migrate} from './migration-test'
-// ok this is working and getting users
-// could commit from here?
 
 async function handler(req, res) {
 	if (req.method === 'OPTIONS') {
@@ -18,8 +15,6 @@ async function handler(req, res) {
 	}
 
 	const {userSupabase, userFirebase} = req
-
-	console.log({userSupabase, userFirebase})
 
 	// Shouldn't be needed because of the middleware, but lets keep for now?
 	if (!userSupabase || !userFirebase) {
