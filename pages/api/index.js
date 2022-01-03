@@ -13,26 +13,33 @@ const {
 } = config
 
 export default function handler(req, res) {
+	const {
+		channelSlug = '{channel-slug}',
+		channelId = '{channel-id}',
+		trackId = '{track-id}',
+	} = req.query
+
 	res.status(200).json({
 		message: 'Welcome to the Radio4000 API (this endpoint is for humans)',
-		docs: `${RADIO4000_REPO_URL}`,
-		cmsUrl: `${RADIO4000_CMS_URL}`,
-		logoUrl: `${RADIO4000_APP_ICON_URL}`,
-		playerScriptUrl: `${RADIO4000_PLAYER_SCRIPT_URL}`,
+		docs: RADIO4000_REPO_URL,
+		cmsUrl: RADIO4000_CMS_URL,
+		logoUrl: RADIO4000_APP_ICON_URL,
+		playerScriptUrl: RADIO4000_PLAYER_SCRIPT_URL,
 		api: {
-			channelBackup: `${RADIO4000_API_URL}/backup?slug={slug}`,
-			channelEmbedUrl: `${RADIO4000_API_URL}/embed?slug={slug}`,
-			channelOEmbedUrl: `${RADIO4000_API_URL}/oembed?slug={slug}`,
+			url: RADIO4000_API_URL,
+			channelBackup: `${RADIO4000_API_URL}/backup?slug=${channelSlug}`,
+			channelEmbedUrl: `${RADIO4000_API_URL}/embed?slug=${channelSlug}`,
+			channelOEmbedUrl: `${RADIO4000_API_URL}/oembed?slug=${channelSlug}`,
 		},
 		firebaseDatabase: {
-			url: `${FIREBASE_DATABASE_URL}`,
+			url: FIREBASE_DATABASE_URL,
 			channelsUrl: `${FIREBASE_DATABASE_URL}/channels.json`,
-			channelUrl: `${FIREBASE_DATABASE_URL}/channels/{id}.json`,
+			channelUrl: `${FIREBASE_DATABASE_URL}/channels/${channelId}.json`,
 			tracksUrl: `${FIREBASE_DATABASE_URL}/tracks.json`,
-			trackUrl: `${FIREBASE_DATABASE_URL}/tracks/{id}.json`,
+			trackUrl: `${FIREBASE_DATABASE_URL}/tracks/${trackId}.json`,
 		},
 		supabaseDatabase: {
-			url: `${SUPABASE_URL}`,
+			url: SUPABASE_URL,
 		},
 		internal: {
 			importFirebase: `${RADIO4000_API_URL}/import/firebase`,
