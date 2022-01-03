@@ -2,6 +2,10 @@ import {verifySupabaseToken} from 'utils/supabase-admin'
 
 // require supabase authentication
 export const requireSupabaseSession = (fn) => async (req, res) => {
+	if (req.method === 'OPTIONS') {
+		res.status(200).end()
+		return fn(req, res)
+	}
 	const {tokenSupabase} = req.body
 	if (!tokenSupabase) {
 		return res.status(401).json({
@@ -10,7 +14,7 @@ export const requireSupabaseSession = (fn) => async (req, res) => {
 		})
 	}
 	const {user, error} = await verifySupabaseToken(tokenSupabase)
-	console.log(user, error)
+	// console.log(user, error)
 	if (error) {
 		return res.status(401).json(error)
 	}

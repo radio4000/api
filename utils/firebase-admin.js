@@ -1,6 +1,5 @@
 import firebase from 'firebase-admin'
 import {initializeApp} from 'firebase-admin/app'
-import {getAuth} from 'firebase-admin/auth'
 import {getDatabase, ref, child, get} from 'firebase-admin/database'
 import config from 'utils/config'
 
@@ -9,7 +8,6 @@ const {
 	FIREBASE_SERVICE_ACCOUNT_PROJECT_ID,
 	FIREBASE_SERVICE_ACCOUNT_CLIENT_EMAIL,
 	FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY,
-
 } = config
 
 /*
@@ -25,11 +23,6 @@ const firebaseAdminClient = initializeApp({
 })
 
 const dbRef = ref(getDatabase())
-
-// verify a user is logged in
-export const verifyFirebaseToken = async (idToken) => {
-	return getAuth().verifyIdToken(idToken)
-}
 
 /*
 	CRUD

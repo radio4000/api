@@ -7,10 +7,9 @@ import {
 	insertChannelTrack
 } from 'utils/queries'
 
-
 /* the test */
 async function migrateTest(data) {
-	console.log('Migrating', data)
+	console.log('Test fake migration success', data)
 	return Promise.resolve(true)
 }
 
@@ -142,7 +141,6 @@ async function migrate({firebaseChannelId, supabaseUserId}) {
 	// Close the connection.
 	await postgres.pool.end()
 }
-
 
 export {
 	migrateTest as migrate
