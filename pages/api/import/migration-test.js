@@ -1,4 +1,4 @@
-import {getUser, getUserExport} from 'lib/providers/firebase-admin'
+import {getUser, getUserExport} from 'lib/providers/firebase-database'
 
 import {
     getUserChannel as getUserChannelSupabase
@@ -8,7 +8,7 @@ async function migrateTest({
 	userFirebase,
 	userSupabase,
 }) {
-    const user = await getUser(userFirebase)
+    const user = await getUser(userFirebase.uid)
     console.log('user', user)
 	return Promise.resolve(true)
 }
