@@ -30,9 +30,11 @@ async function handler(req, res) {
 			userSupabase,
 		})
 	} catch (error) {
-		console.log('error migrating', error)
+		console.log('Error migrating', error)
+		return res.status(500).send(error)
 	}
-	console.log('res', migrationRes)
+	console.log('Sucess migrating', migrationRes)
+	return res.status(200).send(migrationRes)
 }
 
 // export default handler

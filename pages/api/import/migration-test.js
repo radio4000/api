@@ -8,9 +8,14 @@ async function migrateTest({
 	userFirebase,
 	userSupabase,
 }) {
-    const user = await getUser(userFirebase.uid)
-    console.log('user', user)
-	return Promise.resolve(true)
+	console.log(userFirebase)
+  const userExport = await getUser(userFirebase.uid)
+	if (userExport) {
+		return Promise.reject(false)
+	}
+	return Promise.resolve({
+		userExport
+	})
 }
 
 export {
