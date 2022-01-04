@@ -5,18 +5,14 @@ import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from 
 // Reset database for debugging. Doesn't touch auth users.
 // Because queries will fail if something exists with same ids.
 // which order tho? channeltrack, channels, tracks, userchannel? or channels user_channel tracks channel_track
-function resetDb() {
-	return postgres.query(`
-		DELETE FROM channels;
-		DELETE FROM user_channel;
-		DELETE FROM tracks;
-		DELETE FROM channel_track;
-	`)
-}
-// await postgres.query('DELETE FROM public.channel_track')
-// await postgres.query('DELETE FROM public.channels')
-// await postgres.query('DELETE FROM public.tracks')
-// await postgres.query('DELETE FROM public.user_channel')
+// function resetDb() {
+// 	return postgres.query(`
+// 		DELETE FROM channel_track;
+// 		DELETE FROM channels;
+// 		DELETE FROM tracks;
+// 		DELETE FROM user_channel;
+// 	`)
+// }
 
 export async function migrate({userFirebase, userSupabase}) {
 	console.log('running')
@@ -26,7 +22,7 @@ export async function migrate({userFirebase, userSupabase}) {
 	// etch data to migrate from Firebase.
 	const {channel, tracks} = await getUserExport(userFirebase.uid)
 	if (!channel) throw Error('Missing channel, nothing to export!')
-
+	// channel.slug = `${channel.slug}-${Date.now()}`
 	try {
 		await runQueries({
 			supabaseUserId: userSupabase.id,
