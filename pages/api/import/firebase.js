@@ -5,7 +5,7 @@ import {migrate} from './migration'
 
 async function handler(req, res) {
 	if (req.method === 'OPTIONS') {
-		res.status(200) //.end()
+		res.status(200).end()
 		return
 	}
 	if (req.method !== 'POST') {
@@ -23,19 +23,15 @@ async function handler(req, res) {
 		})
 	}
 
-	let migrationRes = null
 	try {
-		migrationRes = await migrate({
-			userFirebase,
-			userSupabase,
-		})
+		await migrate({userFirebase, userSupabase})
 		console.log('Done migrating')
 	} catch (error) {
 		console.log('Error migrating', error)
 		return res.status(500).send(error)
 	}
-	console.log('Sucess migrating', migrationRes)
-	return res.status(200).send(migrationRes)
+	console.log('Sucess migrating')
+	return res.status(200).send({message: 'Migration complete'})
 }
 
 // export default handler

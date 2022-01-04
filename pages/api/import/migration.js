@@ -5,15 +5,7 @@ import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from 
 export async function migrate({userFirebase, userSupabase}) {
 	console.log('running')
 
-	// it seems to run now. it's complaining that a channel already exists in the db :O
-	// omg
-	// omg
-	// i have my staging channel on localhost:3000
-	// but it didn't move track?
-	// now it does
-	// tryyyyyyyy
-
-	// Fetch data to migrate from Firebase.
+	// etch data to migrate from Firebase.
 	const {channel, tracks} = await getUserExport(userFirebase.uid)
 	if (!channel) throw Error('Missing channel, nothing to export!')
 
