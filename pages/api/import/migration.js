@@ -79,31 +79,6 @@ async function runQueries(postgres, {supabaseUserId, channel, tracks}) {
 	}
 }
 
-
-/*
-	 serialization
- */
-function serializeChannel(channel) {
-	if (!channel) {
-		console.log('skipping channel', channel.id)
-		return false
-	}
-	channel.created = toTimestamp(channel.created)
-	channel.updated = channel.updated ? toTimestamp(channel.updated) : channel.created
-	return channel
-}
-function serializeTracks(tracks) {
-	if (tracks.length > 0) {
-		tracks = tracks.map((track) => {
-			if (!track.title) track.title = 'Untitled'
-			track.id = id
-			track.created = toTimestamp(track.created)
-			return track
-		})
-	}
-	return tracks
-}
-
 // Converts the Firebase timestamps to what Postgres wants
 // new Date("1411213745028").toISOString()
 // ==> "2014-09-20T11:49:05.028Z"
@@ -111,9 +86,19 @@ function toTimestamp(timestamp) {
 	return new Date(Number(timestamp)).toISOString()
 }
 
-
 // Returns a timestamp from a Postgres datetime
-const getTime = () =>
-	postgres.query('SELECT now()').then((rows) => {
-		return new Date(rows[0].now).getTime()
-	})
+// const getTime = () =>
+// 	postgres.query('SELECT now()').then((rows) => {
+// 		return new Date(rows[0].now).getTime()
+// 	})
+
+// Reset database for debugging. Queries will fail if something exists with same ids.
+// await postgres.query('DELETE FROM public.channel_track')
+// await postgres.query('DELETE FROM public.channels')
+// await postgres.query('DELETE FROM public.tracks')
+// await postgres.query('DELETE FROM public.user_channel')
+
+// const logs = {start: await getTime(), end: 0, duration: 0}
+// logs.end = getTime()
+// logs.duration = logs.end - logs.start
+// console.log(`Migration ended in ${logs.duration / 1000} seconds`)
