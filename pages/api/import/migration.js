@@ -1,41 +1,42 @@
 import postgres from 'lib/postgres'
-import {getUserExport} from 'lib/providers/firebase-database'
+import {getUserExport} from 'lib/providers/firebase-admin'
 import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from 'lib/queries'
 
-export async function migrate({firebaseUserId, supabaseUserId}) {
-	if (!firebaseUserId || !supabaseUserId) {
-		throw new Error('firebaseUserId and supabaseUserId are required')
-	}
+export async function migrate({userFirebase, userSupabase}) {
+	console.log('running')
 
-	const logs = {start: await getTime(), end: 0, duration: 0}
+	// it seems to run now. it's complaining that a channel already exists in the db :O
+	// omg
+	// omg
+	// i have my staging channel on localhost:3000
+	// but it didn't move track?
+	// now it does
+	// tryyyyyyyy
 
-	// Run the queries on the Postgres database.
+	// Fetch data to migrate from Firebase.
+	const {channel, tracks} = await getUserExport(userFirebase.uid)
+	if (!channel) throw Error('Missing channel, nothing to export!')
+
 	try {
-		// Clean up. Import will fail if something exists with same ids.
-		// await postgres.query('DELETE FROM public.channel_track')
-		// await postgres.query('DELETE FROM public.channels')
-		// await postgres.query('DELETE FROM public.tracks')
-		// await postgres.query('DELETE FROM public.user_channel')
-		const {channel, tracks} = await getUserExport(firebaseUserId)
-		await runQueries(postgres, {
-			supabaseUserId,
-			channel: serializeChannel(channel),
-			tracks: serializeTracks(tracks),
+		await runQueries({
+			supabaseUserId: userSupabase.id,
+			channel,
+			tracks,
 		})
-		console.log('migrated successfully', supabaseUserId, channel.title)
 	} catch (err) {
-		console.log('failed to migrate', supabaseUserId, err)
+		throw Error(err)
+	} finally {
+		// See https://node-postgres.com/features/pooling
+		await postgres.pool.end()
 	}
 
-	// Log and close the connection.
-	logs.end = getTime()
-	logs.duration = logs.end - logs.start
-	console.log(`Migration ended in ${logs.duration / 1000} seconds`)
-	await postgres.pool.end()
+	// What to return?
+	// maybe a nice export package, the user can take away (as they are logged in)
+	// "this is all we had on you", your data in a json tree ^^
+	return true
 }
 
-/* the queries for postgres */
-async function runQueries(postgres, {supabaseUserId, channel, tracks}) {
+export async function runQueries({supabaseUserId, channel, tracks}) {
 	if (!supabaseUserId) throw Error('supabaseUserId is required')
 	if (!channel) throw Error('channel is required')
 

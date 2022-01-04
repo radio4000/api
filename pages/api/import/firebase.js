@@ -1,7 +1,7 @@
 import {requireSupabaseSession} from 'lib/middlewares/auth/supabase'
 import {requireFirebaseSession} from 'lib/middlewares/auth/firebase'
 
-import {migrate} from './migration-test'
+import {migrate} from './migration'
 
 async function handler(req, res) {
 	if (req.method === 'OPTIONS') {
@@ -25,12 +25,11 @@ async function handler(req, res) {
 
 	let migrationRes = null
 	try {
-		console.log('calling migrate')
 		migrationRes = await migrate({
 			userFirebase,
 			userSupabase,
 		})
-		console.log('done migrating')
+		console.log('Done migrating')
 	} catch (error) {
 		console.log('Error migrating', error)
 		return res.status(500).send(error)
