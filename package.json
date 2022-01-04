@@ -1,7 +1,7 @@
 {
 	"name": "radio4000-api",
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev --port 3001",
 		"build": "next build",
 		"start": "next start",
 		"lint": "next lint"
