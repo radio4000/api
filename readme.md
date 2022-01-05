@@ -1,7 +1,5 @@
 # Radio4000 API
 
-In two parts, node js endpoints & firebase/cloudinary
-
 ## Custom endpoints (node + vercel)
 
 |URL|Description|
