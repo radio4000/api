@@ -1,6 +1,6 @@
 import createDOMPurify from 'dompurify'
 import {JSDOM} from 'jsdom'
-import {findChannelBySlug} from 'lib/providers/firebase-rest'
+import {getChannelBySlug} from 'lib/providers/firebase-admin'
 import config from 'lib/config'
 
 const {
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
 	let channel
 	try {
-		channel = await findChannelBySlug(slug)
+		channel = await getChannelBySlug(slug)
 	} catch(error) {
 		console.error(error)
 		res.status(500).send({
@@ -47,7 +47,7 @@ const getOEmbed = ({slug, title, body = '', image}) => {
 		thumbnailUrl = `${RADIO4000_APP_ICON_URL}`
 	}
 
-	// Prevent XSS
+	// Prevent user injections (used in XSS)
 	const DOMPurify = createDOMPurify(new JSDOM('').window)
 	const safeSlug = DOMPurify.sanitize(slug)
 
