@@ -45,8 +45,8 @@ Provides a full JSON export of a channel data.
 
 ### /api/import/firebase-realtime [POST] [authenticated]
 Query parameter:
-- `firebaseToken={firebase-user-access-token}`
-- `supabaseToken={supabase-user-access-token}`
+- `tokenFirebase={firebase-user-access-token}`
+- `tokenSupabase={supabase-user-access-token}`
 
 Imports a Firebase user data to a Supabase instance.
 
@@ -70,8 +70,10 @@ This project uses the framework [Next.js](https://nextjs.org/).
 The project requires access to a Supabase project (and Firebase realtime database for legacy or migration).
 
 To get the needed keys for local development, you can either:
-- [all] copy and fill the `.env.example` file into a `.env` file
+- [all] copy and fill the `.env.example` file into a `.env.local` file
 - [team] run `vercel env pull .env.local`.
+
+Docs: https://vercel.com/docs/concepts/projects/environment-variables
 
 ### Deployment to production
 This project is accesible at https://api.radio4000.com and is autodeployed by Vercel on git branch `main`.
