@@ -27,9 +27,9 @@ export default function handler(req, res) {
 		playerScriptUrl: RADIO4000_PLAYER_SCRIPT_URL,
 		api: {
 			url: RADIO4000_API_URL,
-			channelBackup: `${RADIO4000_API_URL}/backup?slug=${channelSlug}`,
-			channelEmbedUrl: `${RADIO4000_API_URL}/embed?slug=${channelSlug}`,
-			channelOEmbedUrl: `${RADIO4000_API_URL}/oembed?slug=${channelSlug}`,
+			channelBackup: `${RADIO4000_API_URL}/api/backup?slug=${channelSlug}`,
+			channelEmbedUrl: `${RADIO4000_API_URL}/api/embed?slug=${channelSlug}`,
+			channelOEmbedUrl: `${RADIO4000_API_URL}/api/oembed?slug=${channelSlug}`,
 		},
 		firebaseDatabase: {
 			url: FIREBASE_DATABASE_URL,
@@ -42,7 +42,7 @@ export default function handler(req, res) {
 			url: SUPABASE_URL,
 		},
 		internal: {
-			importFirebase: `${RADIO4000_API_URL}/import/firebase-realtime`,
+			importFirebase: `${RADIO4000_API_URL}/api/import/firebase-realtime`,
 		},
 	})
 }
