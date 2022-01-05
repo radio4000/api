@@ -1,57 +1,81 @@
 # Radio4000 API
+This is the [radio4000-api](https://github.com/radio4000/api).
 
-## Custom endpoints (node + vercel)
+## Endpoints
+A list of all endpoints exposed by the API.
+Ex: https://api.radio4000.com/api to access the root API URL.
 
-|URL|Description|
-|--------|-------|
-|https://api.radio4000.com/embed?slug={channelSlug}|Returns an HTML embed with the [radio4000-player](https://github.com/internet4000/radio4000-player)|
-|https://api.radio4000.com/oembed?slug={channelSlug}|Returns a `JSON` object following the [oEmbed spec](http://oembed.com/) for a Radio4000 channel. With this, we can add a meta tag to each channel to get rich previews when the link is shared.|
-|https://api.radio4000.com/backup?slug={channelSlug}|Returns a full JSON export of a channel|
+### /api [GET]
+Query parameters [optional] :
+- `channelSlug={channel-slug}`
+- `channelId={channel-id}`
+- `trackId={track-id}`
 
+The root API endpoint, to learn about the API.
+It can be prefilled with channel/track data.
 
-Here's an example of how to use the oembed:
+### /api/embed [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+An HTML embed with the [radio4000-player](https://github.com/internet4000/radio4000-player)
+
+Example usage of the embed player:
 ```html
-<link rel="alternate" type="application/json+oembed" href="https://api.radio4000.com/oembed?slug=200ok" title="200ok">
+<iframe src="https://api.radio4000.com/embed?slug=oskar" width="320" height="500" frameborder="0"></iframe>
 ```
 
-## Firebase + Cloudinary endpoints
+### /api/oembed [GET]
+Query parameter:
+- `slug={channel-slug}`
 
-For more details on the models and data that you can query with Firebase, see https://github.com/internet4000/radio4000-firebase-rules.
+A `JSON` object following the [oEmbed spec](http://oembed.com/) for a Radio4000 channel.
+With this, we can add a meta tag to each channel to get rich previews when the link is shared.
 
-Learn more on how to use the Firebase (data) & Cloudinary (images) and Radio4000 API
-endpoints in the [firebase rules repository](https://github.com/internet4000/radio4000-firebase-rules).
-
-## Development
-
-To run a local dev server with the api:
-
-- `npm run dev`
-- Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Config with environment variables
-
-The project requires access to Supabase and Firebase databases. 
-
-To get the needed keys for local development, run `vercel env pull .env.local`.
-
-Preview/Staging and Production keys are only defined in the Vercel project.
-
-## Deployment to production
-
-Vercel autodeploys new commits to https://api.radio4000.com.
-
-## Next.js docs
-
-This is a [Next.js](https://nextjs.org/) project.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-# TESTS
-To test the endpoints, use this:
+Example usage the oembed data:
+```html
+<link rel="alternate" type="application/json+oembed" href="https://api.radio4000.com/oembed?slug=oksar" title="oskar">
 ```
-	curl -X POST http://localhost:3000/import/firebase -d '{"tokenFirebase":"value1", "tokenSupabase":"value2"}' -H "Content-Type: application/json" -i
+
+### /api/backup [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+Provides a full JSON export of a channel data.
+
+### /api/import/firebase-realtime [POST] [authenticated]
+Query parameter:
+- `firebaseToken={firebase-user-access-token}`
+- `supabaseToken={supabase-user-access-token}`
+
+Imports a Firebase user data to a Supabase instance.
+
+## Test the API endpoints
+To test querying data from the endpoints, you can use:
 ```
+curl http://api.radio4000.com/api
+curl http://api.radio4000.com/api -i
+curl -X GET http://api.radio4000.com/api/embed?slug=oskar
+curl -X POST http://api.radio4000.com/api/import/firebase-realtime -d '{"tokenFirebase":"value1", "tokenSupabase":"value2"}' -H "Content-Type: application/json" -i
+```
+
+## Development & contributions
+This project uses the framework [Next.js](https://nextjs.org/).
+
+1. Clone the git(hub) repository for this project
+2. Run a local dev server with the api `npm run dev`
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result of your changes
+
+### Environment variables configuratoin
+The project requires access to a Supabase project (and Firebase realtime database for legacy or migration).
+
+To get the needed keys for local development, you can either:
+- [all] copy and fill the `.env.example` file into a `.env` file
+- [team] run `vercel env pull .env.local`.
+
+### Deployment to production
+This project is accesible at https://api.radio4000.com and is autodeployed by Vercel on git branch `main`.
+
+## Notes
+### [Legacy] Firebase & Cloudinary
+See https://github.com/internet4000/radio4000-firebase-rules for more details on the models, rules and data accessible with Google Firebase (realtime database) and Cloudinary (images CDN).

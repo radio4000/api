@@ -42,7 +42,7 @@ export default function handler(req, res) {
 			url: SUPABASE_URL,
 		},
 		internal: {
-			importFirebase: `${RADIO4000_API_URL}/import/firebase`,
+			importFirebase: `${RADIO4000_API_URL}/import/firebase-realtime`,
 		},
 	})
 }
