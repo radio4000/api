@@ -1,22 +1,48 @@
-import config from '../../utils/config'
+import config from 'lib/config'
+
+const {
+	RADIO4000_REPO_URL,
+	RADIO4000_CMS_URL,
+	RADIO4000_API_URL,
+	RADIO4000_PLAYER_SCRIPT_URL,
+	RADIO4000_APP_ICON_URL,
+
+	FIREBASE_DATABASE_URL,
+	SUPABASE_URL,
+	CLOUDINARY_URL
+} = config
 
 export default function handler(req, res) {
-	const welcome = {
-		message: 'Welcome to the Radio4000 API',
+	const {
+		channelSlug = '{channel-slug}',
+		channelId = '{channel-id}',
+		trackId = '{track-id}',
+	} = req.query
+
+	res.status(200).json({
+		message: 'Welcome to the Radio4000 API (this endpoint is for humans)',
+		docs: RADIO4000_REPO_URL,
+		cmsUrl: RADIO4000_CMS_URL,
+		logoUrl: RADIO4000_APP_ICON_URL,
+		playerScriptUrl: RADIO4000_PLAYER_SCRIPT_URL,
 		api: {
-			docs: 'https://github.com/internet4000/radio4000-api-vercel',
-			channelBackup: `${config.apiURL}/backup?slug={slug}`,
-			channelEmbedUrl: `${config.apiURL}/embed?slug={slug}`,
-			channelOEmbedUrl: `${config.apiURL}/oembed?slug={slug}`,
+			url: RADIO4000_API_URL,
+			channelBackup: `${RADIO4000_API_URL}/backup?slug=${channelSlug}`,
+			channelEmbedUrl: `${RADIO4000_API_URL}/embed?slug=${channelSlug}`,
+			channelOEmbedUrl: `${RADIO4000_API_URL}/oembed?slug=${channelSlug}`,
 		},
-		database: {
-			docs: 'https://github.com/internet4000/radio4000-firebase-rules',
-			url: config.databaseURL,
-			channelsUrl: `${config.databaseURL}channels.json`,
-			channelUrl: `${config.databaseURL}channels/{id}.json`,
-			tracksUrl: `${config.databaseURL}tracks.json`,
-			trackUrl: `${config.databaseURL}tracks/{id}.json`,
+		firebaseDatabase: {
+			url: FIREBASE_DATABASE_URL,
+			channelsUrl: `${FIREBASE_DATABASE_URL}/channels.json`,
+			channelUrl: `${FIREBASE_DATABASE_URL}/channels/${channelId}.json`,
+			tracksUrl: `${FIREBASE_DATABASE_URL}/tracks.json`,
+			trackUrl: `${FIREBASE_DATABASE_URL}/tracks/${trackId}.json`,
 		},
-	}
-	res.status(200).json(welcome)
+		supabaseDatabase: {
+			url: SUPABASE_URL,
+		},
+		internal: {
+			importFirebase: `${RADIO4000_API_URL}/import/firebase`,
+		},
+	})
 }

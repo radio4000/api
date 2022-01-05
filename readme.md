@@ -1,7 +1,5 @@
 # Radio4000 API
 
-In two parts, node js endpoints & firebase/cloudinary
-
 ## Custom endpoints (node + vercel)
 
 |URL|Description|
@@ -30,6 +28,14 @@ To run a local dev server with the api:
 - `npm run dev`
 - Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Config with environment variables
+
+The project requires access to Supabase and Firebase databases. 
+
+To get the needed keys for local development, run `vercel env pull .env.local`.
+
+Preview/Staging and Production keys are only defined in the Vercel project.
+
 ## Deployment to production
 
 Vercel autodeploys new commits to https://api.radio4000.com.
@@ -43,3 +49,9 @@ You can start editing the page by modifying `pages/index.js`. The page auto-upda
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+
+# TESTS
+To test the endpoints, use this:
+```
+	curl -X POST http://localhost:3000/import/firebase -d '{"tokenFirebase":"value1", "tokenSupabase":"value2"}' -H "Content-Type: application/json" -i
+```
