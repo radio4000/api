@@ -30,7 +30,7 @@ export default function handler(req, res) {
 			channelBackup: `${RADIO4000_API_URL}/api/backup?slug=${channelSlug}`,
 			channelEmbedUrl: `${RADIO4000_API_URL}/api/embed?slug=${channelSlug}`,
 			channelOEmbedUrl: `${RADIO4000_API_URL}/api/oembed?slug=${channelSlug}`,
-			youtube: `${RADIO4000_API_URL}/api/youtube?ytid=`,
+			youtube: `${RADIO4000_API_URL}/api/youtube?id=`,
 		},
 		firebaseDatabase: {
 			url: FIREBASE_DATABASE_URL,

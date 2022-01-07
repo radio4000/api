@@ -2,20 +2,18 @@ import fetch from 'node-fetch'
 import config from 'lib/config'
 // import {asSeconds} from 'pomeranian-durations'
 
-const {YOUTUBE_API_KEY} = config
-
 export default async function handler(req, res) {
-	const ytid = req.query.ytid
+	const {YOUTUBE_API_KEY} = config
+	const id = req.query.id
 
 	try {
 		// Make sure we have what we need.
 		if (!YOUTUBE_API_KEY) throw new Error('A YOUTUBE_KEY in your .env file is required')
-		if (!ytid) throw new Error('A ytid query parameter is required')
+		if (!id) throw new Error('A ytid query parameter is required')
 
-		// Fetch from the YouTube Data API. Key is from Google Cloud console credentials.
-		const {items} = await fetch(
-			`https://www.googleapis.com/youtube/v3/videos?part=status,contentDetails,snippet&id=${ytid}&key=${YOUTUBE_API_KEY}`
-		).then((res) => res.json())
+		// Fetch from the YouTube Data API.
+		const url = `https://www.googleapis.com/youtube/v3/videos?part=status,contentDetails,snippet&id=${id}&key=${YOUTUBE_API_KEY}`
+		const {items} = await fetch(url).then((res) => res.json())
 
 		// It does not throw with no results, so we check here.
 		if (items.length === 0) return res.status(404).json({message: 'YouToube video not found'})

@@ -52,8 +52,8 @@ Imports a Firebase user data to a Supabase instance.
 
 ### /api/youtube [GET]
 Query parameter:
-- `ytid={youtube video id}
-
+- `id={youtube video id}`
+	
 Returns various info from the YouTube API about a video
 
 ## Test the API endpoints
