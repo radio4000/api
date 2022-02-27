@@ -33,7 +33,8 @@ export async function migrate({userFirebase, userSupabase}) {
 		throw Error(err)
 	} finally {
 		// See https://node-postgres.com/features/pooling
-		await postgres.pool.end()
+		// Correction: dont think we need to do this manually
+		// await postgres.pool.end()
 	}
 
 	// What to return?

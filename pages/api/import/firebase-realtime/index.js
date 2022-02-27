@@ -28,7 +28,7 @@ async function handler(req, res) {
 		console.log('Done migrating')
 	} catch (error) {
 		console.log('Error migrating', error)
-		return res.status(500).send(error)
+		return res.status(500).send(error).end()
 	}
 	console.log('Sucess migrating')
 	return res.status(200).send({message: 'Migration complete'})
