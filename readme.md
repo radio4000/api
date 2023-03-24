@@ -82,8 +82,10 @@ To get the needed keys for local development, you can either:
 Docs: https://vercel.com/docs/concepts/projects/environment-variables
 
 ### Deployment to production
-This project is accesible at https://api.radio4000.com and is autodeployed by Vercel on git branch `main`.
+
+The `main` branch auto-deploys to https://api.radio4000.com  via the `internet4000` team on Vercel.
 
 ## Notes
+
 ### [Legacy] Firebase & Cloudinary
 See https://github.com/internet4000/radio4000-firebase-rules for more details on the models, rules and data accessible with Google Firebase (realtime database) and Cloudinary (images CDN).
