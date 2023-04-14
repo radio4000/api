@@ -52,10 +52,10 @@ export const insertAuthUser = (id, authUser) => {
 }
 
 export const insertChannel = (channel) => {
-	const {title, slug, body, created, updated, link, image} = channel
+	const {title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude} = channel
 	return {
-		text: 'INSERT INTO channels(name, slug, description, created_at, updated_at, url, image) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-		values: [title, slug, body, created, updated, link, image],
+		text: 'INSERT INTO channels(name, slug, description, created_at, updated_at, url, image, longitude, latitude) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
+		values: [title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude],
 	}
 }
 
