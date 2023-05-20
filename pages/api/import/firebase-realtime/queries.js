@@ -1,5 +1,5 @@
-// This file contains the SQL queries needed for
-//  the Firebase -> Supabase migration.
+// This file contains the SQL queries needed for the Firebase -> Supabase migration.
+// All functions return an object with a `text` and `values` property.
 
 export const insertAuthUser = (id, authUser) => {
 	const {email, createdAt, passwordHash} = authUser
@@ -51,11 +51,12 @@ export const insertAuthUser = (id, authUser) => {
 	}
 }
 
-export const insertChannel = (channel) => {
+export const insertChannel = (channel, favorites, followers) => {
 	const {title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude} = channel
+	console.log('!!', favorites, followers)
 	return {
-		text: 'INSERT INTO channels(name, slug, description, created_at, updated_at, url, image, longitude, latitude) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id',
-		values: [title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude],
+		text: 'INSERT INTO channels(name, slug, description, created_at, updated_at, url, image, longitude, latitude, favorites, followers) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id',
+		values: [title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude, favorites, followers],
 	}
 }
 
@@ -78,6 +79,14 @@ export const insertChannelTrack = (userId, channelId, trackId, createdAt) => {
 	return {
 		text: 'INSERT INTO channel_track(user_id, channel_id, track_id, created_at) VALUES($1, $2, $3, $4)',
 		values: [userId, channelId, trackId, createdAt],
+	}
+}
+
+export const insertFollower = (followerId, channelId) => {
+	console.log('inserting follower', followerId, channelId)
+	return {
+		text: 'INSERT INTO followers(follower_id, channel_id) VALUES($1, $2)',
+		values: [followerId, channelId]
 	}
 }
 

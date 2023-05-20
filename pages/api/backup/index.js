@@ -1,27 +1,23 @@
-import {getChannelBackup} from 'lib/providers/firebase-admin'
+import {getChannelBackup, getUserExport} from 'lib/providers/firebase-admin'
 
 export default async function handler(req, res) {
-	const slug = req.query.slug
-	if (!slug) {
+	if (!req.query.slug && !req.query.uid) {
 		return res.status(404).json({
-			message: 'Missing parameter `?slug=` for a channel slug',
+			message: 'Missing parameter `?slug=` for a channel slug, OR `?uid=` for a user id',
 		})
 	}
-
-	let backup
 	try {
-		backup = await getChannelBackup(slug)
-	} catch(error) {
+		let backup
+		if (req.query.uid) {
+			backup = await getUserExport(req.query.uid)
+		} else if (req.query.slug) {
+			backup = await getChannelBackup(req.query.slug)
+		}
+		return res.status(200).json(backup)
+	} catch (error) {
 		console.error(error)
-		res.status(404).json({
-			message: `Could find data to backup for channel @${slug}`
+		return res.status(500).json({
+			error: `Failed to back up @${req.query.slug || req.query.uid}`,
 		})
 	}
-
-	if (!backup) {
-		res.status(404).json({
-			message: `Could not create backup for channel @${slug}`
-		})
-	}
-	res.status(200).send(backup)
 }

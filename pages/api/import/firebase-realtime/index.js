@@ -25,13 +25,12 @@ async function handler(req, res) {
 
 	try {
 		await migrate({userFirebase, userSupabase})
-		console.log('Done migrating')
+		console.log('Success migrating')
+		return res.status(200).send({message: 'Migration complete'})
 	} catch (error) {
 		console.log('Error migrating', error)
-		return res.status(500).send(error).end()
+		return res.status(500).send(error)
 	}
-	console.log('Sucess migrating')
-	return res.status(200).send({message: 'Migration complete'})
 }
 
 // export default handler
