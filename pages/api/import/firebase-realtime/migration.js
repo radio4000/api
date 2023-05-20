@@ -1,6 +1,6 @@
 import postgres from 'lib/providers/postgres-admin'
 import {getUserExport} from 'lib/providers/firebase-admin'
-import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from './queries'
+import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack, insertFollower} from './queries'
 
 // Reset database for debugging. Doesn't touch auth users.
 // Because queries will fail if something exists with same ids.
@@ -15,21 +15,24 @@ import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack} from 
 // }
 
 export async function migrate({userFirebase, userSupabase}) {
-	console.log('running')
+	console.log('migrating')
 
 	// await resetDb()
 
-	// etch data to migrate from Firebase.
-	const {channel, tracks} = await getUserExport(userFirebase.uid)
-	if (!channel) throw Error('Missing channel, nothing to export!')
-	// channel.slug = `${channel.slug}-${Date.now()}`
+	// Fetch data to migrate from Firebase.
+	const {channel, tracks, favorites, followers} = await getUserExport(userFirebase.uid)
+
 	try {
 		await runQueries({
 			supabaseUserId: userSupabase.id,
 			channel,
 			tracks,
+			favorites,
+			followers,
 		})
+		console.log('done with queries')
 	} catch (err) {
+		console.log('failed queries', err)
 		throw Error(err)
 	} finally {
 		// See https://node-postgres.com/features/pooling
@@ -43,26 +46,46 @@ export async function migrate({userFirebase, userSupabase}) {
 	return true
 }
 
-async function runQueries({supabaseUserId, channel, tracks}) {
-	if (!supabaseUserId) throw Error('supabaseUserId is required')
-	if (!channel) throw Error('channel is required')
+async function runQueries({supabaseUserId, channel, tracks, favorites, followers}) {
+	if (!supabaseUserId) throw Error('A supabase user id is required')
+	if (!channel) throw Error('A channel is required')
 
+	// Insert channel
 	let newChannelId
 	try {
-		const res = await postgres.query(insertChannel(channel))
+		const res = await postgres.query(insertChannel(channel, favorites, followers))
 		newChannelId = res.rows[0].id
 	} catch (err) {
 		throw Error(err)
 	}
 
+	// Insert user_channel
 	try {
 		await postgres.query(insertUserChannel(supabaseUserId, newChannelId))
 	} catch (err) {
 		throw Error(err)
 	}
 
-	if (!tracks) return
+	// Insert favorites
+	/*
+	if (favorites) {
+		console.log('inserting favorites')
+		const queries = favorites.map((id) => postgres.query(insertFollower(newChannelId, id)))
+		const results = await Promise.all(queries)
+		console.log('favorites', results)
+	}
 
+	// Insert followers
+	if (followers) {
+		console.log('inserting followers')
+		const queries = followers.map((id) => postgres.query(insertFollower(id, newChannelId)))
+		const results = await Promise.all(queries)
+		console.log('followers', results)
+	}
+	*/
+
+	// Insert tracks
+	if (!tracks) return
 	let newTracks
 	try {
 		// @todo: maybe here do not filter out tracks with no url, but default empty string?
@@ -70,7 +93,10 @@ async function runQueries({supabaseUserId, channel, tracks}) {
 		// i guess yea. but then we'd have to support in player etc etc <- does it not skip next already?
 		// we can test import/export for a while anyways, not ready to launch <-- yep
 		// i think the tracks without url are corrupt db entries. we require url otherwise
-		const trackQueries = tracks.filter((t) => t.url).map((track) => postgres.query(insertTrack(track)))
+		const trackQueries = tracks
+			// .slice(0, 20)
+			.filter((t) => t.url)
+			.map((track) => postgres.query(insertTrack(track)))
 
 		// @todo: maybe find a way to make sure all tracks are inserted; if fail, insert none?
 		// maybe it is in the postgres.query settings, or these mutation/procedure or what not
@@ -95,4 +121,6 @@ async function runQueries({supabaseUserId, channel, tracks}) {
 	} catch (err) {
 		throw Error(err)
 	}
+
+	return {newChannelId}
 }
