@@ -23,7 +23,14 @@
 		"eslint": "8.5.0",
 		"eslint-config-next": "12.0.7",
 		"firebase-tools": "^9.18.0",
+		"prettier": "^2.8.8",
 		"raw-loader": "^4.0.2"
 	},
-	"license": "aGPLv3"
+	"license": "aGPLv3",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "printWidth": 120
+  }
 }
