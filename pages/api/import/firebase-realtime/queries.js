@@ -52,11 +52,11 @@ export const insertAuthUser = (id, authUser) => {
 }
 
 export const insertChannel = (channel, favorites, followers) => {
-	const {title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude} = channel
+	const {id, title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude} = channel
 	console.log('!!', favorites, followers)
 	return {
-		text: 'INSERT INTO channels(name, slug, description, created_at, updated_at, url, image, longitude, latitude, favorites, followers) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING id',
-		values: [title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude, favorites, followers],
+		text: 'INSERT INTO channels(firebase_id, name, slug, description, created_at, updated_at, url, image, longitude, latitude, favorites, followers) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING id',
+		values: [id, title, slug, body, created, updated, link, image, coordinatesLongitude, coordinatesLatitude, favorites, followers],
 	}
 }
 
