@@ -24,9 +24,9 @@ async function handler(req, res) {
 	}
 
 	try {
-		await migrate({userFirebase, userSupabase})
+		const result = await migrate({userFirebase, userSupabase})
 		console.log('Success migrating')
-		return res.status(200).send({message: 'Migration complete'})
+		return res.status(200).send({message: 'Migration complete', result})
 	} catch (error) {
 		console.log('Error migrating', error)
 		return res.status(500).send(error)
