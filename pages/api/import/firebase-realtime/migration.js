@@ -14,6 +14,15 @@ import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack, inser
 // 	`)
 // }
 
+/**
+ * Migrates a user + channel + tracks + favorites + followers from Firebase to an existing Supabase user.
+ * @param {object} props
+ * @property {object} userFirebase
+ * @property {string} userFirebase.uid
+ * @property {object} userSupabase
+ * @property {string} userSupabase.id
+ * @returns
+ */
 export async function migrate({userFirebase, userSupabase}) {
 	console.log('migrating')
 
@@ -46,7 +55,7 @@ export async function migrate({userFirebase, userSupabase}) {
 	return true
 }
 
-async function runQueries({supabaseUserId, channel, tracks, favorites, followers}) {
+export async function runQueries({supabaseUserId, channel, tracks, favorites, followers}) {
 	if (!supabaseUserId) throw Error('A supabase user id is required')
 	if (!channel) throw Error('A channel is required')
 
