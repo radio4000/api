@@ -33,5 +33,6 @@ yarn-error.log*
 .vercel
 
 # migrate script log files
+/lib/migration-script/input/
 log-migrate-backups.json
 log-migrate-errors.json
