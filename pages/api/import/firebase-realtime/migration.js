@@ -130,5 +130,5 @@ export async function runQueries({supabaseUserId, channel, tracks, favorites, fo
 		throw Error(err)
 	}
 
-	return {title: channel.title, newChannelId, oldChannelirebaseId: channel.firebaseId}
+	return {title: channel.title, newChannelId, oldChannelirebaseId: channel.firebase_id}
 }
