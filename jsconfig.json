@@ -1,6 +1,9 @@
 {
-	"compilerOptions": {
+  "compilerOptions": {
 		"baseUrl": ".",
 		"checkJs": true,
-	}
+    "paths": {
+      "@/*": ["./*"]
+    }
+  }
 }
