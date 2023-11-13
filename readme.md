@@ -56,6 +56,18 @@ Query parameter:
 	
 Returns various info from the YouTube API about a video
 
+### /api/v2/backup [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+Returns all the data for a single channel and all its tracks.
+
+### /api/v2/embed [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+An HTML embed with the radio4000/components.
+
 ## Test the API endpoints
 To test querying data from the endpoints, you can use:
 ```
