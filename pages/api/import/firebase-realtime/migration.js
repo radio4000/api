@@ -5,20 +5,29 @@ import {insertChannel, insertUserChannel, insertTrack, insertChannelTrack, inser
 // Reset database for debugging. Doesn't touch auth users.
 // Because queries will fail if something exists with same ids.
 // which order tho? channeltrack, channels, tracks, userchannel? or channels user_channel tracks channel_track
-// function resetDb() {
-// 	return postgres.query(`
-// 		DELETE FROM channel_track;
-// 		DELETE FROM channels;
-// 		DELETE FROM tracks;
-// 		DELETE FROM user_channel;
-// 	`)
-// }
+export function resetDb() {
+	console.log('RESETTING THE DATABASE')
+	return postgres.query(`
+		DELETE FROM channel_track;
+		DELETE FROM channels;
+		DELETE FROM tracks;
+		DELETE FROM user_channel;
+		DELETE FROM accounts;
+		DELETE FROM auth.users;
+		DELETE FROM tracks;
+	`)
+}
 
+/**
+ * Migrates a user + channel + tracks + favorites + followers from Firebase to an existing Supabase user.
+ * @param {object} props
+ * @property {object} userFirebase
+ * @property {string} userFirebase.uid
+ * @property {object} userSupabase
+ * @property {string} userSupabase.id
+ * @returns
+ */
 export async function migrate({userFirebase, userSupabase}) {
-	console.log('migrating')
-
-	// await resetDb()
-
 	// Fetch data to migrate from Firebase.
 	const {channel, tracks, favorites, followers} = await getUserExport(userFirebase.uid)
 
@@ -30,7 +39,6 @@ export async function migrate({userFirebase, userSupabase}) {
 			favorites,
 			followers,
 		})
-		console.log('done with queries')
 	} catch (err) {
 		console.log('failed queries', err)
 		throw Error(err)
@@ -46,7 +54,7 @@ export async function migrate({userFirebase, userSupabase}) {
 	return true
 }
 
-async function runQueries({supabaseUserId, channel, tracks, favorites, followers}) {
+export async function runQueries({supabaseUserId, channel, tracks, favorites, followers}) {
 	if (!supabaseUserId) throw Error('A supabase user id is required')
 	if (!channel) throw Error('A channel is required')
 
@@ -63,26 +71,26 @@ async function runQueries({supabaseUserId, channel, tracks, favorites, followers
 	try {
 		await postgres.query(insertUserChannel(supabaseUserId, newChannelId))
 	} catch (err) {
+		console.log('debuggerrrr', supabaseUserId, newChannelId)
 		throw Error(err)
 	}
 
 	// Insert favorites
-	/*
 	if (favorites) {
-		console.log('inserting favorites')
-		const queries = favorites.map((id) => postgres.query(insertFollower(newChannelId, id)))
-		const results = await Promise.all(queries)
-		console.log('favorites', results)
+		// console.log('not inserting favorites', favorites)
+		// @todo turn `favorites` (list of firebase channel ids) into list of supabase channel ids.
+		// const queries = favorites.map((id) => postgres.query(insertFollower(newChannelId, id)))
+		// const results = await Promise.all(queries)
+		// console.log('favorites', results)
 	}
 
 	// Insert followers
 	if (followers) {
-		console.log('inserting followers')
-		const queries = followers.map((id) => postgres.query(insertFollower(id, newChannelId)))
-		const results = await Promise.all(queries)
-		console.log('followers', results)
+		// console.log('not inserting followers', followers)
+		// const queries = followers.map((id) => postgres.query(insertFollower(id, newChannelId)))
+		// const results = await Promise.all(queries)
+		// console.log('followers', results)
 	}
-	*/
 
 	// Insert tracks
 	if (!tracks) return
@@ -94,7 +102,7 @@ async function runQueries({supabaseUserId, channel, tracks, favorites, followers
 		// we can test import/export for a while anyways, not ready to launch <-- yep
 		// i think the tracks without url are corrupt db entries. we require url otherwise
 		const trackQueries = tracks
-			// .slice(0, 20)
+			// .slice(0, 20) // @TODO REMOVE
 			.filter((t) => t.url)
 			.map((track) => postgres.query(insertTrack(track)))
 
@@ -122,5 +130,5 @@ async function runQueries({supabaseUserId, channel, tracks, favorites, followers
 		throw Error(err)
 	}
 
-	return {newChannelId}
+	return {title: channel.title, newChannelId, oldChannelirebaseId: channel.firebase_id}
 }

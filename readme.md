@@ -34,7 +34,7 @@ With this, we can add a meta tag to each channel to get rich previews when the l
 
 Example usage the oembed data:
 ```html
-<link rel="alternate" type="application/json+oembed" href="https://api.radio4000.com/oembed?slug=oksar" title="oskar">
+<link rel="alternate" type="application/json+oembed" href="https://api.radio4000.com/oembed?slug=oskar" title="oskar">
 ```
 
 ### /api/backup [GET]
