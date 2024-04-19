@@ -3,6 +3,11 @@ import {requireFirebaseSession} from 'lib/middlewares/auth/firebase'
 
 import {migrate} from './migration'
 
+// By default Vercel cuts timeouts at 10 seconds. With our pro account we can do 300.
+export const config = {
+	maxDuration: 300
+}
+
 async function handler(req, res) {
 	if (req.method === 'OPTIONS') {
 		res.status(200).end()
