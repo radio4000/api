@@ -1,32 +1,32 @@
 {
-	"name": "radio4000-api",
-	"scripts": {
-		"dev": "next dev --port 3001",
-		"build": "next build",
-		"start": "next start",
-		"lint": "next lint"
-	},
-	"dependencies": {
-		"@supabase/supabase-js": "^1.29.1",
-		"dompurify": "^2.3.4",
-		"firebase-admin": "^10.0.1",
-		"jsdom": "^19.0.0",
-		"next": "12.0.7",
-		"node-fetch": "^3.1.0",
-		"pg": "^8.7.1",
-		"react": "17.0.2",
-		"react-dom": "17.0.2",
-		"uuid": "^8.3.2",
-		"youtubei": "^1.1.2"
-	},
-	"devDependencies": {
-		"eslint": "8.5.0",
-		"eslint-config-next": "12.0.7",
-		"firebase-tools": "^9.18.0",
-		"prettier": "^2.8.8",
-		"raw-loader": "^4.0.2"
-	},
-	"license": "aGPLv3",
+  "name": "radio4000-api",
+  "scripts": {
+    "dev": "next dev --port 3001",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^1.29.1",
+    "dompurify": "^2.3.4",
+    "firebase-admin": "^10.0.1",
+    "jsdom": "^19.0.0",
+    "next": "12.0.7",
+    "node-fetch": "^3.1.0",
+    "pg": "^8.7.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "uuid": "^8.3.2",
+    "youtubei": "^1.1.2"
+  },
+  "devDependencies": {
+    "eslint": "8.5.0",
+    "eslint-config-next": "12.0.7",
+    "firebase-tools": "^9.18.0",
+    "prettier": "^2.8.8",
+    "raw-loader": "^4.0.2"
+  },
+  "license": "aGPLv3",
   "prettier": {
     "semi": false,
     "singleQuote": true,
