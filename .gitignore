@@ -30,3 +30,9 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# migrate script log files
+/lib/migration-script/firebase-auth-export.json
+/lib/migration-script/firebase-database-export.json
+log-migrate-backups.json
+log-migrate-errors.json

@@ -1,5 +1,17 @@
 {
-  "compilerOptions": {
-    "baseUrl": "."
-  }
+	"compilerOptions": {
+		"baseUrl": ".",
+		"esModuleInterop": true,
+		"target": "esnext",
+		"moduleResolution": "nodenext",
+		"module": "NodeNext",
+		"allowJs": true,
+		"checkJs": true,
+		"resolveJsonModule": true,
+		"paths": {
+			"@/*": [
+				"./*"
+			]
+		}
+	}
 }

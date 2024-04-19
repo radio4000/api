@@ -6,10 +6,9 @@ const {
 	RADIO4000_API_URL,
 	RADIO4000_PLAYER_SCRIPT_URL,
 	RADIO4000_APP_ICON_URL,
-
 	FIREBASE_DATABASE_URL,
 	SUPABASE_URL,
-	CLOUDINARY_URL
+	// CLOUDINARY_URL
 } = config
 
 export default function handler(req, res) {
