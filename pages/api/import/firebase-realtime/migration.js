@@ -40,7 +40,6 @@ export async function migrate({userFirebase, userSupabase}) {
 			followers,
 		})
 	} catch (err) {
-		console.log('failed queries', err)
 		throw Error(err)
 	} finally {
 		// See https://node-postgres.com/features/pooling
