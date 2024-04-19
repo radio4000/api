@@ -1,0 +1,7 @@
+{
+	"functions": {
+		"api/import/firebase-realtime/index.js": {
+			"maxDuration": 300
+		}
+	}
+}
