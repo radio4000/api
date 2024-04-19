@@ -1,6 +1,6 @@
 {
 	"functions": {
-		"api/import/firebase-realtime": {
+		"pages/api/**/*": {
 			"maxDuration": 300
 		}
 	}
