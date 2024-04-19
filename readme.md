@@ -56,6 +56,18 @@ Query parameter:
 	
 Returns various info from the YouTube API about a video
 
+### /api/v2/backup [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+Returns all the data for a single channel and all its tracks.
+
+### /api/v2/embed [GET]
+Query parameter:
+- `slug={channel-slug}`
+
+An HTML embed with the radio4000/components.
+
 ## Test the API endpoints
 To test querying data from the endpoints, you can use:
 ```
@@ -73,10 +85,10 @@ This project uses the framework [Next.js](https://nextjs.org/).
 3. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result of your changes
 
 ### Environment variables configuratoin
-The project requires access to a Supabase project (and Firebase realtime database for legacy or migration).
+The project requires access to a Supabase project (and Firebase realtime database for legacy or migration, as well as Youtube for automatic info fetching).
 
 To get the needed keys for local development, you can either:
-- [all] copy and fill the `.env.example` file into a `.env.local` file
+- [all] copy and fill the `.env.local.example` file into a `.env.local` file
 - [team] run `vercel env pull .env.local`.
 
 Docs: https://vercel.com/docs/concepts/projects/environment-variables
