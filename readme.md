@@ -1,9 +1,13 @@
 # Radio4000 API
+
 This is the [radio4000-api](https://github.com/radio4000/api).
 
 ## Endpoints
+
 A list of all endpoints exposed by the API.
-Ex: https://api.radio4000.com/api to access the root API URL.
+The base URL is https://api.radio4000.com/.
+
+As of April 2024 we introduced v2: https://api.radio4000.com/v2.
 
 ### /api [GET]
 Query parameters [optional] :

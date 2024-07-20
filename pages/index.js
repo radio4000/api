@@ -4,8 +4,6 @@ export default function Index() {
 	// console.info(readme)
 	const preStyles = {
 		'boxSizing': 'border-box',
-		'backgroundColor': 'black',
-		'color': 'white',
 		'padding': '1rem',
 		'width': '100%',
 		'maxWidth': '80rem',
