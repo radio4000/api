@@ -27,7 +27,7 @@ app.get('/', async (c) => {
   const query = c.req.query('query')
 
   if (!query) {
-    return c.json({ error: 'missing ?query' }, 500)
+    return c.json({ error: 'missing ?query' }, 400)
   }
 
   try {

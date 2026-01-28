@@ -31,7 +31,7 @@ app.use('*', cors({
   credentials: true,
 }))
 
-// V1 endpoints (under /api/)
+app.route('/', root)
 app.route('/api/', root)
 app.route('/api/embed', embed)
 app.route('/api/oembed', oembed)

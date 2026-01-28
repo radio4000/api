@@ -27,10 +27,11 @@ app.get('/', async (c) => {
     channel = data
   } catch (error) {
     console.error(error)
+    const errorMessage = error instanceof Error ? error.message : (error as { message?: string })?.message || JSON.stringify(error)
     return c.json({
       message: `Could not fetch channel @${slug}`,
       code: 500,
-      internalError: error instanceof Error ? error.message : String(error),
+      internalError: errorMessage,
     }, 500)
   }
 

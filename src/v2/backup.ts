@@ -31,9 +31,11 @@ app.get('/', async (c) => {
     return c.json({ channel, tracks })
   } catch (error) {
     console.error(error)
+    const errorMessage = error instanceof Error ? error.message : (error as { message?: string })?.message || JSON.stringify(error)
     return c.json(
       {
         error: `Failed to back up @${slug}`,
+        details: errorMessage,
       },
       500,
     )

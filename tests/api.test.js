@@ -120,10 +120,32 @@ describe('Radio4000 API', () => {
     })
   })
 
+  describe('GET /api/youtube', () => {
+    it('returns error without id', async () => {
+      const res = await fetch(`${BASE_URL}/api/youtube`)
+      expect(res.status).toBe(500)
+    })
+
+    it('returns 404 for non-existent video', async () => {
+      const res = await fetch(`${BASE_URL}/api/youtube?id=xxxxxxxxxxx`)
+      expect(res.status).toBe(404)
+    })
+
+    it('returns video data with valid id', async () => {
+      const res = await fetch(`${BASE_URL}/api/youtube?id=dQw4w9WgXcQ`)
+      expect(res.status).toBe(200)
+
+      const data = await res.json()
+      expect(data.id).toBe('dQw4w9WgXcQ')
+      expect(data.title).toBeDefined()
+      expect(data.url).toContain('youtube.com')
+    })
+  })
+
   describe('GET /api/search-youtube', () => {
-    it('returns error without query', async () => {
+    it('returns 400 without query', async () => {
       const res = await fetch(`${BASE_URL}/api/search-youtube`)
-      expect(res.ok).toBe(false)
+      expect(res.status).toBe(400)
     })
 
     it('returns search results with query', async () => {

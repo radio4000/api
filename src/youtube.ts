@@ -33,7 +33,7 @@ app.get('/', async (c) => {
     const response = await fetch(url)
     const data = await response.json() as YouTubeResponse
 
-    if (data.items.length === 0) return c.json({ message: 'YouToube video not found' }, 404)
+    if (data.items.length === 0) return c.json({ message: 'YouTube video not found' }, 404)
 
     return c.json(serialize(data.items[0]), 200)
   } catch (err) {
