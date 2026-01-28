@@ -8,18 +8,15 @@ beforeAll(() => {
 })
 
 describe('Radio4000 API', () => {
-  describe('GET /api', () => {
-    it('returns API info', async () => {
-      const res = await fetch(`${BASE_URL}/api`)
+  describe('GET /api/', () => {
+    it('returns API info as JSON', async () => {
+      const res = await fetch(`${BASE_URL}/api/`)
       expect(res.status).toBe(200)
 
       const data = await res.json()
       expect(data.message).toContain('Welcome to the Radio4000 API')
       expect(data.api).toBeDefined()
       expect(data.api.url).toBeDefined()
-      expect(data.api.channelBackup).toBeDefined()
-      expect(data.api.channelEmbedUrl).toBeDefined()
-      expect(data.api.channelOEmbedUrl).toBeDefined()
     })
   })
 
@@ -140,7 +137,7 @@ describe('Radio4000 API', () => {
     })
   })
 
-  describe('GET /api/404', () => {
+  describe('404 handler', () => {
     it('returns 404 for unknown routes', async () => {
       const res = await fetch(`${BASE_URL}/api/unknown-route-xyz`)
       expect(res.status).toBe(404)

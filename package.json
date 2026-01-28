@@ -1,44 +1,26 @@
 {
   "name": "radio4000-api",
+  "type": "module",
   "scripts": {
-    "dev": "next dev --port 3001",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:local": "API_URL=http://localhost:3001 vitest run",
-    "test:live": "API_URL=https://api.radio4000.com vitest run"
+    "test:local": "API_URL=http://localhost:8787 vitest run",
+    "test:live": "API_URL=https://api.radio4000.com vitest run",
+    "check": "biome check --write && tsc --noEmit"
   },
   "dependencies": {
-    "@radio4000/sdk": "^0.4.3",
-    "@supabase/supabase-js": "^1.29.1",
-    "dompurify": "^2.3.4",
-    "firebase-admin": "^10.0.1",
-    "jsdom": "^19.0.0",
-    "next": "12.0.7",
-    "node-fetch": "^3.1.0",
-    "pg": "^8.7.1",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "uuid": "^8.3.2",
-    "youtubei": "^1.1.2"
+    "@radio4000/sdk": "^0.7.2",
+    "@supabase/supabase-js": "^2.39.0",
+    "hono": "^4.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.3.13",
+    "@cloudflare/workers-types": "^4.20240117.0",
+    "typescript": "^5.3.3",
     "vitest": "^4.0.18",
-    "eslint": "8.5.0",
-    "eslint-config-next": "12.0.7",
-    "eslint-config-prettier": "^9.0.0",
-    "firebase-tools": "^9.18.0",
-    "prettier": "^2.8.8",
-    "raw-loader": "^4.0.2",
-    "supabase": "^1.106.1"
+    "wrangler": "^4.61.0"
   },
-  "license": "aGPLv3",
-  "prettier": {
-    "semi": false,
-    "singleQuote": true,
-    "bracketSpacing": false,
-    "printWidth": 120
-  }
+  "license": "aGPLv3"
 }

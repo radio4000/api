@@ -1,0 +1,13 @@
+name = "radio4000-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+RADIO4000_URL = "https://radio4000.com"
+RADIO4000_CMS = "https://cms.radio4000.com"
+CLOUDINARY_URL = "https://res.cloudinary.com/radio4000/image/upload"
+
+# Secrets (set via `wrangler secret put`):
+# - YOUTUBE_API_KEY
+# - SUPABASE_URL
+# - SUPABASE_ANON_KEY
