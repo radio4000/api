@@ -54,7 +54,7 @@ interface Channel {
 const getOEmbed = (channel: Channel, c: { env: Env; req: { url: string } }) => {
   const { slug, name: title, description: body = '', image } = channel
   const cloudinaryUrl = c.env.CLOUDINARY_URL
-  const cmsUrl = c.env.RADIO4000_CMS
+  const cmsUrl = c.env.RADIO4000_URL
   const requestOrigin = new URL(c.req.url).origin
   const apiUrl = requestOrigin
 

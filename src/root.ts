@@ -10,7 +10,7 @@ const RADIO4000_APP_ICON_URL = 'https://assets.radio4000.com/icon-r4.svg'
 app.get('/', (c) => {
 	const { channelSlug = '{channel-slug}', channelId = '{channel-id}', trackId = '{track-id}' } = c.req.query()
 
-	const RADIO4000_CMS_URL = c.env.RADIO4000_CMS
+	const RADIO4000_CMS_URL = c.env.RADIO4000_URL
 	const SUPABASE_URL = c.env.SUPABASE_URL
 	const baseUrl = new URL(c.req.url).origin
 	const RADIO4000_API_URL = `${baseUrl}/api`
