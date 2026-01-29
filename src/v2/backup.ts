@@ -28,7 +28,13 @@ app.get('/', async (c) => {
     if ('error' in tracksResult && tracksResult.error) throw tracksResult.error
     const tracks = 'data' in tracksResult ? tracksResult.data : []
 
-    return c.json({ channel, tracks })
+    const { data: followers, error: followersError } = await sdk.channels.readFollowers(channel.id)
+    if (followersError) throw followersError
+
+    const { data: followings, error: followingsError } = await sdk.channels.readFollowings(channel.id)
+    if (followingsError) throw followingsError
+
+    return c.json({ channel, tracks, followers, followings })
   } catch (error) {
     console.error(error)
     const errorMessage = error instanceof Error ? error.message : (error as { message?: string })?.message || JSON.stringify(error)
