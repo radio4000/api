@@ -73,8 +73,9 @@ The `.env` file contains the required secrets:
 ### Testing
 
 ```bash
-bun run test              # test against production
-bun run test:local        # test against localhost:8787
+bun run test              # test against localhost:8788 (requires dev server)
+bun run test:preview      # test against preview worker
+bun run test:live         # test against production
 ```
 
 ## Deployment

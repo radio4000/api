@@ -4,11 +4,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:local": "API_URL=http://localhost:8788 vitest run",
-    "test:live": "API_URL=https://api.radio4000.com vitest run",
+    "test": "API_URL=http://localhost:8788 vitest run",
     "test:preview": "API_URL=https://radio4000-api.i4k.workers.dev vitest run",
+    "test:live": "API_URL=https://api.radio4000.com vitest run",
     "check": "biome check --write && tsc --noEmit"
   },
   "dependencies": {
