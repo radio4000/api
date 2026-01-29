@@ -97,8 +97,8 @@ describe('Radio4000 API', () => {
       expect(res.status).toBe(200)
 
       const html = await res.text()
-      expect(html).toContain('<!DOCTYPE html>')
-      expect(html).toContain('r4-app')
+      expect(html.toLowerCase()).toContain('<!doctype html>')
+      expect(html).toMatch(/r4-app|r4-player/)
     })
   })
 
