@@ -17,6 +17,7 @@ npm-debug.log*
 # local env files
 .env
 .env.local
+.dev.vars
 
 # cloudflare
 .wrangler

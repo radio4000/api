@@ -26,7 +26,7 @@ app.get('/', async (c) => {
   const id = c.req.query('id')
 
   try {
-    if (!YOUTUBE_API_KEY) throw new Error('A YOUTUBE_KEY in your .env file is required')
+    if (!YOUTUBE_API_KEY) throw new Error('YOUTUBE_API_KEY is required')
     if (!id) throw new Error('A ytid query parameter is required')
 
     const url = `https://www.googleapis.com/youtube/v3/videos?part=status,contentDetails,snippet&id=${id}&key=${YOUTUBE_API_KEY}`
