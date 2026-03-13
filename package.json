@@ -9,7 +9,9 @@
     "test:local": "API_URL=http://localhost:8788 vitest run",
     "test:live": "API_URL=https://api.radio4000.com vitest run",
     "test:preview": "API_URL=https://radio4000-api.i4k.workers.dev vitest run",
-    "check": "biome check --write && tsc --noEmit"
+    "check": "biome check --write && tsc --noEmit",
+    "supabase:dev": "supabase functions serve --no-verify-jwt",
+    "supabase:deploy": "supabase functions deploy api --no-verify-jwt"
   },
   "dependencies": {
     "@radio4000/sdk": "^0.7.2",

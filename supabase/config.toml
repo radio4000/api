@@ -1,0 +1,5 @@
+[project]
+id = "radio4000-api"
+
+[functions]
+verify_jwt = false
